@@ -1,0 +1,24 @@
+{% extends "_base.html" %}
+{% set imprint = imprint | default({}) %}
+{% set imprint_title = imprint.page_title | default(imprint.label | default('Impressum', true), true) | trim %}
+{% block title %}{{ imprint_title }} — {{ profile.given_name }} {{ profile.family_name }}{% endblock %}
+{% block body %}
+<article class="post imprint">
+  <header class="imprint__header">
+    <h2 class="post__title">{{ imprint_title | e }}</h2>
+  </header>
+  {% if imprint.intro %}
+  <p class="imprint__intro post__lead">{{ imprint.intro | e }}</p>
+  {% endif %}
+  {% for section in imprint.sections | default([]) %}
+  <section class="imprint__section cv-section"{% if section.heading %} aria-labelledby="imprint-section-{{ loop.index }}"{% endif %}>
+    {% if section.heading %}
+    <h3 id="imprint-section-{{ loop.index }}">{{ section.heading | e }}</h3>
+    {% endif %}
+    {% for para in section.paragraphs | default([]) %}
+    <p>{{ para | e }}</p>
+    {% endfor %}
+  </section>
+  {% endfor %}
+</article>
+{% endblock %}

@@ -409,6 +409,21 @@ section.cv-section h3 {
   text-align: center;
 }
 
+.site-footer__legal-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.site-footer__legal-link:hover {
+  color: var(--text);
+}
+
+.site-footer__legal-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .cta-inline {
   margin-top: 2.5rem;
   padding-top: 1.5rem;

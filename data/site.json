@@ -68,6 +68,33 @@
       }
     ]
   },
+  "imprint": {
+    "label": "Impressum",
+    "url": "imprint.html",
+    "page_title": "Impressum",
+    "intro": "Replace this page with your legally required provider identification (e.g. § 5 TMG / § 55 RStV). The placeholder text below is not legal advice.",
+    "sections": [
+      {
+        "heading": "Angaben gemäß § 5 TMG",
+        "paragraphs": [
+          "Your name or company, street and number, postal code and city, Germany."
+        ]
+      },
+      {
+        "heading": "Kontakt",
+        "paragraphs": [
+          "Telephone: …",
+          "E-Mail: …"
+        ]
+      },
+      {
+        "heading": "EU-Streitschlichtung / Consumer dispute resolution",
+        "paragraphs": [
+          "Add links and notices as required for your case (e.g. EU ODR platform, participation in dispute resolution bodies)."
+        ]
+      }
+    ]
+  },
   "plugins": {
     "headertitle": "contract-vowels",
     "avatar": "float-on-hover"

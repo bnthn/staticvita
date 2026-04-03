@@ -1,6 +1,6 @@
 # Site data (`site.json`)
 
-The build reads **`site.json`** in this directory (`build.py` loads it and passes the whole object into the Jinja environment). Top-level keys become template variables: `profile`, `links`, `cv`, and optionally `plugins` (conventionally listed last in the file).
+The build reads **`site.json`** in this directory (`build.py` loads it and passes the whole object into the Jinja environment). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `imprint`, and optionally `plugins` (conventionally listed last in the file).
 
 Use valid JSON (double quotes, no trailing commas). After editing, run `./build.sh` from the repository root.
 
@@ -10,8 +10,8 @@ Used on the links page (`index.html`) and the CV page (`cv.html`).
 
 | Field | Type | Notes |
 |--------|------|--------|
-| `given_name` | string | Shown in titles and headings (and footer). |
-| `family_name` | string | Shown in titles and headings (and footer). |
+| `given_name` | string | Shown in titles and headings. |
+| `family_name` | string | Shown in titles and headings. |
 | `header_title` | string or omit | If set to a non-empty string, used for the site header `<h1>` link on all pages instead of `given_name` + `family_name`. Omit or leave empty to use the name. |
 | `avatar` | string or omit | Path **relative to `static/`** (e.g. `images/avatar.svg`). If omitted or empty, initials are shown from the name. |
 | `subtitle` | string or omit | Tagline under the name. |
@@ -79,6 +79,18 @@ Each element:
 | `name` | string | Certification title. |
 | `issuer` | string | Issuing organization. |
 | `year` | string or omit | Shown after the issuer. |
+
+## `imprint` (object, optional)
+
+Legal / provider identification link in the site footer on all pages, and optional content on `imprint.html`. Omit the key or set `url` to an empty string to hide the footer link entirely.
+
+| Field | Type | Notes |
+|--------|------|--------|
+| `url` | string | Footer link `href`. Use a path such as `imprint.html` for the built-in page, or a full `https://…` URL if the legal text is hosted elsewhere. External URLs get `rel="noopener noreferrer"`. |
+| `label` | string or omit | Footer link text. Defaults to **Impressum** if omitted. |
+| `page_title` | string or omit | Document `<title>` prefix and main heading on `imprint.html`. Defaults to `label`, then **Impressum**. |
+| `intro` | string or omit | Optional lead paragraph on `imprint.html`. |
+| `sections` | array or omit | Each item: optional `heading` (string) and optional `paragraphs` (array of strings). Rendered as sections on `imprint.html`. |
 
 ## `plugins` (object, optional)
 

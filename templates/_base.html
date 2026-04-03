@@ -1,5 +1,7 @@
 {% from "_plugins.html" import header_title_link %}
 {% set p = plugins | default({}) %}
+{% set imprint = imprint | default({}) %}
+{% set imprint_url = imprint.url | default('', true) | trim %}
 {% set header_display = profile.header_title | default(profile.given_name ~ ' ' ~ profile.family_name, true) | trim %}
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -39,7 +41,11 @@
       {% block body %}{% endblock %}
     </main>
     <footer class="site-footer">
-      <p>&copy; {{ profile.given_name }} {{ profile.family_name }}</p>
+      {% if imprint_url %}
+      <p>
+        <a href="{{ imprint_url | e }}" class="site-footer__legal-link"{% if imprint_url.startswith('http://') or imprint_url.startswith('https://') %} rel="noopener noreferrer"{% endif %}>{{ imprint.label | default('Impressum') | e }}</a>
+      </p>
+      {% endif %}
     </footer>
   </div>
   <script src="static/theme.js" defer></script>
