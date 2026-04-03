@@ -33,11 +33,6 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="{{ base_url }}/{{ page_path | e }}">
   <meta property="og:locale" content="en_US">
-  <meta name="twitter:card" content="{{ 'summary_large_image' if og_img_raw else 'summary' }}">
-  <meta name="twitter:title" content="{{ self.title() | striptags | trim | e }}">
-  {% if meta_desc %}
-  <meta name="twitter:description" content="{{ meta_desc | e }}">
-  {% endif %}
   {%- if og_img_raw %}
     {%- if og_img_raw.startswith('http://') or og_img_raw.startswith('https://') %}
       {%- set og_image_abs = og_img_raw %}
@@ -45,12 +40,7 @@
       {%- set og_image_abs = base_url ~ '/static/' ~ og_img_raw.lstrip('/') %}
     {%- endif %}
   <meta property="og:image" content="{{ og_image_abs | e }}">
-  <meta name="twitter:image" content="{{ og_image_abs | e }}">
   {%- endif %}
-  {% set tw = s.twitter_site | default('', true) | trim %}
-  {% if tw %}
-  <meta name="twitter:site" content="{{ tw | e }}">
-  {% endif %}
   {% endif %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="static/style.css">

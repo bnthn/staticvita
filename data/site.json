@@ -1,9 +1,4 @@
 {
-  "seo": {
-    "base_url": "https://example.com",
-    "og_image": "images/avatar.svg",
-    "twitter_site": "@example"
-  },
   "profile": {
     "header_title": "alexander",
     "given_name": "Alex",
@@ -72,6 +67,10 @@
         "year": "2023"
       }
     ]
+  },
+  "seo": {
+    "base_url": "https://example.com",
+    "og_image": "images/avatar.svg"
   },
   "imprint": {
     "label": "Impressum",
