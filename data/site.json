@@ -1,4 +1,8 @@
 {
+  "plugins": {
+    "headertitle": "contract-vowels",
+    "avatar": "float-on-hover"
+  },
   "profile": {
     "given_name": "Alex",
     "family_name": "Developer",

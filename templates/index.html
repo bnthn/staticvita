@@ -2,8 +2,9 @@
 {% from "_icons.html" import social_icon_classes %}
 {% block title %}{{ profile.given_name }} {{ profile.family_name }} — Links{% endblock %}
 {% block body %}
+{% set p = plugins | default({}) %}
 <div class="profile">
-  <div class="profile__avatar-wrap">
+  <div class="profile__avatar-wrap{% if p.avatar == 'float-on-hover' %} profile__avatar-wrap--plugin-float-on-hover{% endif %}">
     {% if profile.avatar %}
     <img class="profile__avatar" src="static/{{ profile.avatar | e }}" width="140" height="140" alt="">
     {% else %}

@@ -1,0 +1,18 @@
+{% macro header_title_link(href, given, family, mode) -%}
+{% set full = (given ~ ' ' ~ family) | trim %}
+{% if mode == 'contract-vowels' %}
+<a href="{{ href | e }}" aria-label="{{ full | e }}">
+  {%- for c in (given ~ ' ' ~ family) -%}
+    {%- if (c | lower) in 'aeiou' -%}
+      <span class="plugin-contract-vowels__vowel">{{ c | e }}</span>
+    {%- elif c == ' ' -%}
+      {{ c }}
+    {%- else -%}
+      <span class="plugin-contract-vowels__cons">{{ c | e }}</span>
+    {%- endif -%}
+  {%- endfor -%}
+</a>
+{% else %}
+<a href="{{ href | e }}">{{ given | e }} {{ family | e }}</a>
+{% endif %}
+{%- endmacro %}
