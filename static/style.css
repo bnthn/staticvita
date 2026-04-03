@@ -105,7 +105,7 @@ a:hover {
 .site-header__actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
 .nav {
@@ -139,12 +139,18 @@ a:hover {
   font-size: 1.1rem;
 }
 
+/* Hidden until theme.js adds class "js" on <html> (no dead control without JS). */
 .theme-toggle {
+  display: none;
+}
+
+html.js .theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
+  margin: 0;
   padding: 0;
   border: none;
   border-radius: var(--radius);
@@ -153,12 +159,12 @@ a:hover {
   cursor: pointer;
 }
 
-.theme-toggle:hover {
+html.js .theme-toggle:hover {
   color: var(--accent);
   background: var(--social-bg);
 }
 
-.theme-toggle:focus-visible {
+html.js .theme-toggle:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }

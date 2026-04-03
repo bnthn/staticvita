@@ -14,6 +14,7 @@ Used on the links page (`index.html`) and the CV page (`cv.html`).
 | `family_name` | string | Shown in titles and headings. |
 | `header_title` | string or omit | If set to a non-empty string, used for the site header `<h1>` link on all pages instead of `given_name` + `family_name`. Omit or leave empty to use the name. |
 | `avatar` | string or omit | Path **relative to `static/`** (e.g. `images/avatar.svg`). If omitted or empty, initials are shown from the name. |
+| `avatar_alt` | string or omit | `alt` text for the profile `<img>`. If omitted, defaults to `Portrait of {given_name} {family_name}` or `Profile picture` if both names are empty. |
 | `subtitle` | string or omit | Tagline under the name. |
 | `email` | string or omit | Rendered as a `mailto:` link on the CV. |
 | `location` | string or omit | Shown on the CV. |

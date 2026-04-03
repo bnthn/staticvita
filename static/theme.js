@@ -1,4 +1,5 @@
 (function () {
+  document.documentElement.classList.add("js");
   var KEY = "theme";
   var root = document.documentElement;
 

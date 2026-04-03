@@ -6,7 +6,10 @@
 <div class="profile">
   <div class="profile__avatar-wrap{% if p.avatar == 'float-on-hover' %} profile__avatar-wrap--plugin-float-on-hover{% endif %}">
     {% if profile.avatar %}
-    <img class="profile__avatar" src="static/{{ profile.avatar | e }}" width="140" height="140" alt="">
+    {% set _avatar_custom = profile.avatar_alt | default('', true) | trim %}
+    {% set _avatar_name = ((profile.given_name | default('', true)) ~ ' ' ~ (profile.family_name | default('', true))) | trim %}
+    {% set _avatar_alt = _avatar_custom if _avatar_custom else ('Portrait of ' ~ _avatar_name if _avatar_name else 'Profile picture') %}
+    <img class="profile__avatar" src="static/{{ profile.avatar | e }}" width="140" height="140" alt="{{ _avatar_alt | e }}">
     {% else %}
     <div class="profile__avatar profile__avatar--placeholder" aria-hidden="true">
       <span class="profile__initials">{% if profile.given_name %}{{ profile.given_name[0] }}{% endif %}{% if profile.family_name %}{{ profile.family_name[0] }}{% endif %}</span>
