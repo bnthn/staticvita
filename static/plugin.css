@@ -110,13 +110,13 @@
     1em 2em 3.5em -2.5em rgba(0, 0, 0, 0.45);
 }
 
-/* Room for glow + no ancestor clipping (large ::before sits behind avatar) */
+/* Room for glow + no ancestor clipping (::before wash sits behind avatar) */
 .wrap:has(.profile__avatar-wrap--plugin-float-on-hover),
 .profile:has(.profile__avatar-wrap--plugin-float-on-hover) {
   overflow: visible;
 }
 
-/* Dark hover: large square layer + ellipse gradient — no border-radius on ::before
+/* Dark hover: compact ellipse wash behind avatar — no border-radius on ::before
    (rounded pseudo was clipping the wash to a circle slightly larger than the avatar). */
 [data-theme="dark"] .profile__avatar-wrap--plugin-float-on-hover::before {
   content: "";
@@ -124,17 +124,18 @@
   left: 50%;
   top: 50%;
   z-index: -1;
-  width: min(92vmin, 28rem);
-  height: min(92vmin, 28rem);
+  width: min(42vmin, 10.5rem);
+  height: min(42vmin, 10.5rem);
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  /* Ellipse fills the square painting box; fade goes fully transparent before corners */
+  /* Slight down-right offset reads as directional falloff / shadow-adjacent highlight */
+  transform: translate(calc(-50% + 0.35rem), calc(-50% + 0.6rem));
+  /* Ellipse center biased up-left so the brighter mass sits opposite the offset */
   background: radial-gradient(
-    ellipse 72% 72% at 50% 50%,
-    rgba(255, 255, 255, 0.13) 0%,
-    rgba(210, 224, 255, 0.06) 32%,
-    rgba(210, 224, 255, 0.02) 52%,
-    transparent 68%
+    ellipse 68% 68% at 44% 40%,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(210, 224, 255, 0.055) 30%,
+    rgba(210, 224, 255, 0.018) 50%,
+    transparent 66%
   );
   opacity: 0;
   transition: opacity 0.45s ease;
