@@ -1,9 +1,6 @@
 {
-  "plugins": {
-    "headertitle": "contract-vowels",
-    "avatar": "float-on-hover"
-  },
   "profile": {
+    "header_title": "alexander",
     "given_name": "Alex",
     "family_name": "Developer",
     "avatar": "images/avatar.svg",
@@ -70,5 +67,9 @@
         "year": "2023"
       }
     ]
+  },
+  "plugins": {
+    "headertitle": "contract-vowels",
+    "avatar": "float-on-hover"
   }
 }

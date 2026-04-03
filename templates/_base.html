@@ -1,5 +1,6 @@
 {% from "_plugins.html" import header_title_link %}
 {% set p = plugins | default({}) %}
+{% set header_display = profile.header_title | default(profile.given_name ~ ' ' ~ profile.family_name, true) | trim %}
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -16,7 +17,7 @@
 <body>
   <div class="wrap">
     <header class="site-header{% if p.headertitle == 'contract-vowels' %} site-header--plugin-contract-vowels{% endif %}">
-      <h1>{{ header_title_link('index.html', profile.given_name, profile.family_name, p.headertitle | default('')) }}</h1>
+      <h1>{{ header_title_link('index.html', header_display, p.headertitle | default('')) }}</h1>
       <div class="site-header__actions">
         <nav class="nav" aria-label="Primary">
           <a href="index.html" class="nav__link">
