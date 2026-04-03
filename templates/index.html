@@ -24,6 +24,7 @@
     {% for link in links %}
     <li>
       <a class="social-icon" href="{{ link.url }}" rel="noopener noreferrer" aria-label="{{ link.label | e }}">
+        <span class="visually-hidden">{{ link.label }}</span>
         <i class="{{ social_icon_classes(link) }}" aria-hidden="true"></i>
       </a>
     </li>

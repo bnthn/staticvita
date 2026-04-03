@@ -39,10 +39,10 @@ For human-oriented documentation, see [README.md](README.md).
 
 - **No-JS baseline:** All meaningful content and navigation must work with JavaScript disabled. JS is only for theme preference (`static/theme.js`).
 - **Theme control:** The theme toggle is **hidden by default** in CSS and only shown when `theme.js` runs and adds the class `js` on `<html>`, so users do not see a non-functional control without JS.
-- **Design vs accessibility:** When the intended visual design conflicts with an accessibility or text-browser improvement, **follow the design** and document any tradeoff in PRs or here. Example: icon-only header and social links use `aria-label` (and visually hidden nav labels where used); Lynx and similar clients may not surface `aria-label` as clearly as visible link text—add visible labels only when they fit the design.
+- **Design vs accessibility:** When the intended visual design conflicts with an accessibility or text-browser improvement, **follow the design** and document any tradeoff in PRs or here. Example: icon-only controls use `aria-label` plus a `.visually-hidden` text label when needed (header nav, profile social links) so screen readers and Lynx get real link text—`aria-label` alone is often ignored in line-mode browsers.
 - **Images and icons:** Use non-empty, appropriate `alt` on `<img>` (see `profile.avatar_alt` in `data/README.md` for the profile image). Decorative Font Awesome icons use `aria-hidden="true"`; put the accessible name on the parent control (`aria-label` on `<a>` / the theme button).
 - **HTML quality:** Keep templates producing **valid, semantic HTML** (landmarks, headings, `lang`). After template changes, run `./build.sh` and fix issues; CI may run `html5validator` on `dist/`.
 
 ## Text browsers (e.g. Lynx)
 
-The site should remain usable in line-mode browsers: links and headings must be meaningful. The default layout prioritizes a compact icon header; that is an intentional tradeoff for Lynx link text on some links. Prefer visible link text when it matches the design; otherwise rely on `aria-label` and accept weaker labeling in CLI browsers.
+The site should remain usable in line-mode browsers: links and headings must be meaningful. The default layout prioritizes a compact icon header; for icon-only links, use `.visually-hidden` link text (CSS-hidden in graphical browsers) so Lynx still shows a name, and keep `aria-label` on the control for redundancy.
