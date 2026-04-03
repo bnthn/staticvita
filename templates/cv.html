@@ -49,6 +49,13 @@
   <div class="edu-item">
     <p class="job-title">{{ edu.degree }}</p>
     <p class="job-org">{{ edu.institution }}{% if edu.year %} · {{ edu.year }}{% endif %}</p>
+    {% if edu.bullets %}
+    <ul>
+      {% for b in edu.bullets %}
+      <li>{{ b }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
   {% endfor %}
 </section>

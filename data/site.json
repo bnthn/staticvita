@@ -41,7 +41,11 @@
       {
         "degree": "B.Sc. Computer Science",
         "institution": "Example University",
-        "year": "2018"
+        "year": "2018",
+        "bullets": [
+          "Focus on data structures and algorithms.",
+          "Thesis on distributed systems."
+        ]
       }
     ],
     "skills": [
