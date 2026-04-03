@@ -1,12 +1,13 @@
 {% extends "_base.html" %}
 {% block title %}CV — {{ profile.given_name }} {{ profile.family_name }}{% endblock %}
 {% block body %}
+<article class="post">
 <div class="cv-top">
-  <h2>{{ profile.given_name }} {{ profile.family_name }}</h2>
+  <h2 class="post__title">{{ profile.given_name }} {{ profile.family_name }}</h2>
   {% if profile.subtitle %}
-  <p class="subtitle">{{ profile.subtitle }}</p>
+  <p class="subtitle post__subtitle">{{ profile.subtitle }}</p>
   {% endif %}
-  <ul class="cv-meta">
+  <ul class="cv-meta post__meta">
     {% if profile.email %}
     <li><a href="mailto:{{ profile.email | e }}">{{ profile.email }}</a></li>
     {% endif %}
@@ -15,7 +16,7 @@
     {% endif %}
   </ul>
   {% if profile.summary %}
-  <p class="cv-summary">{{ profile.summary }}</p>
+  <p class="cv-summary post__lead">{{ profile.summary }}</p>
   {% endif %}
 </div>
 
@@ -94,4 +95,5 @@
 {% endif %}
 
 <p class="cta-inline"><a href="index.html">Back to links</a></p>
+</article>
 {% endblock %}

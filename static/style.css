@@ -1,12 +1,32 @@
 :root {
+  --radius: 10px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif;
+}
+
+[data-theme="dark"] {
   --bg: #0f1419;
   --surface: #1a2332;
   --text: #e7ecf3;
   --muted: #8b9cb3;
   --accent: #6eb5ff;
   --border: #2d3a4d;
-  --radius: 10px;
-  --font: "DM Sans", system-ui, sans-serif;
+  --social-bg: #1e2838;
+  --social-hover: #252f42;
+  --placeholder-bg: #2d3a4d;
+  --placeholder-fg: #b8c5d6;
+}
+
+[data-theme="light"] {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #1a1d21;
+  --muted: #5c6570;
+  --accent: #0b6bcb;
+  --border: #d8dde4;
+  --social-bg: #eef1f5;
+  --social-hover: #e2e7ee;
+  --placeholder-bg: #d8dde4;
+  --placeholder-fg: #5c6570;
 }
 
 *,
@@ -38,6 +58,18 @@ a:hover {
   text-decoration: underline;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .wrap {
   width: min(40rem, calc(100% - 2rem));
   margin: 0 auto;
@@ -47,7 +79,7 @@ a:hover {
 .site-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding-bottom: 1.5rem;
@@ -67,103 +99,234 @@ a:hover {
 
 .site-header h1 a:hover {
   color: var(--accent);
+  text-decoration: none;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .nav {
   display: flex;
-  gap: 1.25rem;
+  gap: 0.25rem;
 }
 
-.nav a {
+.nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius);
   color: var(--muted);
-  font-size: 0.95rem;
+  text-decoration: none;
 }
 
-.nav a:hover {
+.nav__link:hover {
   color: var(--accent);
+  background: var(--social-bg);
+  text-decoration: none;
 }
 
-.hero {
+.nav__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.nav__icon {
+  font-size: 1.1rem;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  background: var(--social-bg);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+  font-size: 1.1rem;
+}
+
+[data-theme="dark"] .theme-toggle__icon--when-light {
+  display: none;
+}
+
+[data-theme="light"] .theme-toggle__icon--when-dark {
+  display: none;
+}
+
+/* PaperMod-style profile (home) */
+.profile {
   text-align: center;
-  margin-bottom: 2.5rem;
+  padding: 1rem 0 2rem;
 }
 
-.hero h2 {
+.profile__avatar-wrap {
+  margin: 0 auto 1.25rem;
+  width: 140px;
+  height: 140px;
+}
+
+.profile__avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .profile__avatar {
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.35);
+}
+
+.profile__avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--placeholder-bg);
+  color: var(--placeholder-fg);
+  font-size: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.profile__initials {
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.profile__name {
   margin: 0 0 0.35rem;
   font-size: 1.75rem;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-.hero .subtitle {
-  margin: 0;
+.profile__subtitle {
+  margin: 0 0 1.5rem;
   color: var(--muted);
   font-size: 1rem;
 }
 
-.link-list {
+.profile-socials {
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.65rem;
 }
 
-.link-list a {
-  display: block;
-  padding: 0.85rem 1.1rem;
-  background: var(--surface);
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--social-bg);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
   color: var(--text);
-  font-weight: 500;
-  text-align: center;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
-.link-list a:hover {
+.social-icon:hover {
   text-decoration: none;
   border-color: var(--accent);
-  background: #222d3f;
+  background: var(--social-hover);
+  color: var(--accent);
+}
+
+.social-icon:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.profile__cta {
+  margin: 2rem 0 0;
+  font-size: 0.95rem;
+}
+
+.profile__cta a {
+  font-weight: 500;
+}
+
+/* CV as single post */
+.post {
+  max-width: 48rem;
+  margin: 0 auto;
+}
+
+.post__title {
+  margin: 0 0 0.25rem;
+  font-size: 1.85rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.post__subtitle {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.post__meta {
+  margin: 0;
+  padding: 0 0 1rem;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.post__meta li {
+  margin-bottom: 0.2rem;
+}
+
+.post__lead {
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text);
 }
 
 .cv-top {
   margin-bottom: 2rem;
 }
 
-.cv-top h2 {
-  margin: 0 0 0.25rem;
-  font-size: 1.85rem;
-  font-weight: 600;
-}
-
-.cv-top .subtitle {
-  margin: 0 0 0.75rem;
-  color: var(--muted);
-  font-size: 1.05rem;
-}
-
-.cv-meta {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.cv-meta li {
-  margin-bottom: 0.2rem;
-}
-
 .cv-summary {
-  margin-top: 1rem;
-  color: var(--text);
   max-width: 42em;
 }
 
 section.cv-section {
   margin-bottom: 2rem;
+  padding-top: 0.25rem;
 }
 
 section.cv-section h3 {
@@ -247,7 +410,9 @@ section.cv-section h3 {
 }
 
 .cta-inline {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
   text-align: center;
 }
 

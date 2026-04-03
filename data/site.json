@@ -2,6 +2,7 @@
   "profile": {
     "given_name": "Alex",
     "family_name": "Developer",
+    "avatar": "images/avatar.svg",
     "subtitle": "Software engineer · Open source",
     "email": "alex@example.com",
     "location": "Berlin, Germany",
@@ -11,7 +12,7 @@
     { "label": "LinkedIn", "url": "https://www.linkedin.com/in/example", "icon": "linkedin" },
     { "label": "GitHub", "url": "https://github.com/example", "icon": "github" },
     { "label": "GitLab", "url": "https://gitlab.com/example", "icon": "gitlab" },
-    { "label": "Codeberg", "url": "https://codeberg.org/example", "icon": "codeberg" }
+    { "label": "Codeberg", "url": "https://codeberg.org/example", "icon": "codeberg", "fa_class": "fa-solid fa-code-branch" }
   ],
   "cv": {
     "experience": [

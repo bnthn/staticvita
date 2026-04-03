@@ -1,0 +1,14 @@
+{# Returns space-separated Font Awesome classes for <i> (FA6 / all.min.css). #}
+{% macro social_icon_classes(link) -%}
+{%- if link.fa_class -%}
+{{ link.fa_class | trim }}
+{%- else -%}
+{%- set key = (link.icon | default('', true)) | lower -%}
+{%- if key == 'linkedin' -%}fa-brands fa-linkedin-in
+{%- elif key == 'github' -%}fa-brands fa-github
+{%- elif key == 'gitlab' -%}fa-brands fa-gitlab
+{%- elif key == 'codeberg' -%}fa-solid fa-code-branch
+{%- else -%}fa-solid fa-link
+{%- endif -%}
+{%- endif -%}
+{%- endmacro %}

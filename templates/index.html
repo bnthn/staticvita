@@ -1,18 +1,30 @@
 {% extends "_base.html" %}
+{% from "_icons.html" import social_icon_classes %}
 {% block title %}{{ profile.given_name }} {{ profile.family_name }} — Links{% endblock %}
 {% block body %}
-<div class="hero">
-  <h2>{{ profile.given_name }} {{ profile.family_name }}</h2>
+<div class="profile">
+  <div class="profile__avatar-wrap">
+    {% if profile.avatar %}
+    <img class="profile__avatar" src="static/{{ profile.avatar | e }}" width="140" height="140" alt="">
+    {% else %}
+    <div class="profile__avatar profile__avatar--placeholder" aria-hidden="true">
+      <span class="profile__initials">{% if profile.given_name %}{{ profile.given_name[0] }}{% endif %}{% if profile.family_name %}{{ profile.family_name[0] }}{% endif %}</span>
+    </div>
+    {% endif %}
+  </div>
+  <h2 class="profile__name">{{ profile.given_name }} {{ profile.family_name }}</h2>
   {% if profile.subtitle %}
-  <p class="subtitle">{{ profile.subtitle }}</p>
+  <p class="profile__subtitle">{{ profile.subtitle }}</p>
   {% endif %}
+  <ul class="profile-socials" role="list">
+    {% for link in links %}
+    <li>
+      <a class="social-icon" href="{{ link.url }}" rel="noopener noreferrer" aria-label="{{ link.label | e }}">
+        <i class="{{ social_icon_classes(link) }}" aria-hidden="true"></i>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <p class="profile__cta"><a href="cv.html">View CV</a></p>
 </div>
-<ul class="link-list" role="list">
-  {% for link in links %}
-  <li>
-    <a href="{{ link.url }}" rel="noopener noreferrer">{{ link.label }}</a>
-  </li>
-  {% endfor %}
-</ul>
-<p class="cta-inline"><a href="cv.html">View CV</a></p>
 {% endblock %}

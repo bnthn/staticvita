@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,19 +7,29 @@
   {% if profile.summary %}
   <meta name="description" content="{{ profile.summary | e }}">
   {% endif %}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
   <div class="wrap">
     <header class="site-header">
       <h1><a href="index.html">{{ profile.given_name }} {{ profile.family_name }}</a></h1>
-      <nav class="nav" aria-label="Primary">
-        <a href="index.html">Home</a>
-        <a href="cv.html">CV</a>
-      </nav>
+      <div class="site-header__actions">
+        <nav class="nav" aria-label="Primary">
+          <a href="index.html" class="nav__link">
+            <i class="fa-solid fa-house nav__icon" aria-hidden="true"></i>
+            <span class="visually-hidden">Home</span>
+          </a>
+          <a href="cv.html" class="nav__link">
+            <i class="fa-solid fa-file-lines nav__icon" aria-hidden="true"></i>
+            <span class="visually-hidden">CV</span>
+          </a>
+        </nav>
+        <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle light and dark theme" aria-pressed="false">
+          <i class="fa-solid fa-sun theme-toggle__icon theme-toggle__icon--when-dark" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon theme-toggle__icon theme-toggle__icon--when-light" aria-hidden="true"></i>
+        </button>
+      </div>
     </header>
     <main>
       {% block body %}{% endblock %}
@@ -28,5 +38,6 @@
       <p>&copy; {{ profile.given_name }} {{ profile.family_name }}</p>
     </footer>
   </div>
+  <script src="static/theme.js" defer></script>
 </body>
 </html>
