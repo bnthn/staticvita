@@ -1,20 +1,61 @@
-{% from "_plugins.html" import header_title_link %}
-{% set p = plugins | default({}) %}
-{% set imprint = imprint | default({}) %}
-{% set imprint_url = imprint.url | default('', true) | trim %}
-{% set header_display = profile.header_title | default(profile.given_name ~ ' ' ~ profile.family_name, true) | trim %}
+{%- from "_plugins.html" import header_title_link %}
+{%- set p = plugins | default({}) %}
+{%- set imprint = imprint | default({}) %}
+{%- set imprint_url = imprint.url | default('', true) | trim %}
+{%- set s = seo | default({}) %}
+{%- set _bu = s.base_url | default('', true) | trim %}
+{%- set base_url = _bu[:-1] if _bu.endswith('/') else _bu %}
+{%- set page_path_raw %}
+{%- block canonical_page %}index.html{% endblock %}
+{%- endset %}
+{%- set page_path = page_path_raw | trim %}
+{%- set meta_desc_raw %}
+{%- block meta_description %}{% if profile.summary %}{{ profile.summary }}{% endif %}{% endblock %}
+{%- endset %}
+{%- set meta_desc = meta_desc_raw | trim %}
+{%- set og_img_raw = s.og_image | default('', true) | trim %}
+{%- set header_display = profile.header_title | default(profile.given_name ~ ' ' ~ profile.family_name, true) | trim %}
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{{ profile.given_name }} {{ profile.family_name }}{% endblock %}</title>
-  {% if profile.summary %}
-  <meta name="description" content="{{ profile.summary | e }}">
+  {% if meta_desc %}
+  <meta name="description" content="{{ meta_desc | e }}">
+  {% endif %}
+  {% if base_url %}
+  <link rel="canonical" href="{{ base_url }}/{{ page_path | e }}">
+  <meta property="og:title" content="{{ self.title() | striptags | trim | e }}">
+  {% if meta_desc %}
+  <meta property="og:description" content="{{ meta_desc | e }}">
+  {% endif %}
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ base_url }}/{{ page_path | e }}">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="{{ 'summary_large_image' if og_img_raw else 'summary' }}">
+  <meta name="twitter:title" content="{{ self.title() | striptags | trim | e }}">
+  {% if meta_desc %}
+  <meta name="twitter:description" content="{{ meta_desc | e }}">
+  {% endif %}
+  {%- if og_img_raw %}
+    {%- if og_img_raw.startswith('http://') or og_img_raw.startswith('https://') %}
+      {%- set og_image_abs = og_img_raw %}
+    {%- else %}
+      {%- set og_image_abs = base_url ~ '/static/' ~ og_img_raw.lstrip('/') %}
+    {%- endif %}
+  <meta property="og:image" content="{{ og_image_abs | e }}">
+  <meta name="twitter:image" content="{{ og_image_abs | e }}">
+  {%- endif %}
+  {% set tw = s.twitter_site | default('', true) | trim %}
+  {% if tw %}
+  <meta name="twitter:site" content="{{ tw | e }}">
+  {% endif %}
   {% endif %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="static/style.css">
   <link rel="stylesheet" href="static/plugin.css">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
   <div class="wrap">

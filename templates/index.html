@@ -1,6 +1,29 @@
 {% extends "_base.html" %}
 {% from "_icons.html" import social_icon_classes %}
 {% block title %}{{ profile.given_name }} {{ profile.family_name }} — Links{% endblock %}
+{% block meta_description %}{{ (seo | default({})).meta_description_home | default('', true) | trim or (profile.summary | default('', true) | trim) }}{% endblock %}
+{% block extra_head %}
+{% if base_url %}
+{% set na = namespace(same_as=[]) %}
+{% for l in links | default([]) %}
+  {% if l.url is defined and (l.url.startswith('http://') or l.url.startswith('https://')) %}
+    {% set na.same_as = na.same_as + [l.url] %}
+  {% endif %}
+{% endfor %}
+{% set full_name = (profile.given_name ~ ' ' ~ profile.family_name) | trim %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": {{ full_name | tojson }},
+  "url": {{ (base_url ~ '/' ~ page_path) | tojson }}{% if profile.subtitle %},
+  "jobTitle": {{ profile.subtitle | tojson }}{% endif %}{% if profile.email %},
+  "email": {{ profile.email | tojson }}{% endif %}{% if na.same_as %},
+  "sameAs": {{ na.same_as | tojson }}{% endif %}
+}
+</script>
+{% endif %}
+{% endblock %}
 {% block body %}
 {% set p = plugins | default({}) %}
 <div class="profile">

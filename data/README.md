@@ -1,8 +1,26 @@
 # Site data (`site.json`)
 
-The build reads **`site.json`** in this directory (`build.py` loads it and passes the whole object into the Jinja environment). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `imprint`, and optionally `plugins` (conventionally listed last in the file).
+The build reads **`site.json`** in this directory (`build.py` loads it and passes the whole object into the Jinja environment). Top-level keys become template variables: optionally `seo`, then `profile`, `links`, `cv`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
 
 Use valid JSON (double quotes, no trailing commas). After editing, run `./build.sh` from the repository root.
+
+## `seo` (object, optional)
+
+Controls canonical URLs, Open Graph / Twitter meta tags, optional **Person** JSON-LD on the home page, and—when `base_url` is set—generated **`sitemap.xml`** and **`robots.txt`** in `dist/` (written by `build.py` after HTML render). Omit the key or leave `base_url` empty to skip absolute URLs and sitemap generation (e.g. local `file://` preview); in that case any existing `dist/sitemap.xml` / `dist/robots.txt` from a previous build are removed.
+
+| Field | Type | Notes |
+|--------|------|--------|
+| `base_url` | string or omit | Public site origin **without** a trailing slash (e.g. `https://yoursite.example`). Used for `link rel="canonical"`, `og:url`, JSON-LD `url`, and sitemap `loc` values. |
+| `og_image` | string or omit | Open Graph / Twitter image: either a full `https://…` (or `http://…`) URL, or a path **relative to `static/`** (e.g. `images/avatar.svg`), resolved against `base_url` as `/static/…`. |
+| `twitter_site` | string or omit | Twitter / X handle for `twitter:site`, e.g. `@yourhandle` (include the `@` if you use this field). |
+
+Optional overrides for `meta name="description"`:
+
+| Field | Type | Notes |
+|--------|------|--------|
+| `meta_description_home` | string or omit | Home page (`index.html`). If omitted, `profile.summary` is used when set. |
+| `meta_description_cv` | string or omit | CV page. If omitted, `profile.summary` is used when set. |
+| `meta_description_imprint` | string or omit | Imprint page. If omitted, `imprint.intro` is used (truncated); if that is empty, nothing is emitted. |
 
 ## `profile` (object)
 
@@ -108,6 +126,9 @@ Effect values use **kebab-case** (e.g. `contract-vowels`). Unknown values are ig
 
 ```json
 {
+  "seo": {
+    "base_url": ""
+  },
   "profile": {
     "given_name": "",
     "family_name": "",

@@ -1,7 +1,9 @@
 {% extends "_base.html" %}
 {% set imprint = imprint | default({}) %}
 {% set imprint_title = imprint.page_title | default(imprint.label | default('Impressum', true), true) | trim %}
+{% block canonical_page %}imprint.html{% endblock %}
 {% block title %}{{ imprint_title }} — {{ profile.given_name }} {{ profile.family_name }}{% endblock %}
+{% block meta_description %}{% set _m = (seo | default({})).meta_description_imprint | default('', true) | trim %}{{ _m or ((imprint.intro | default('', true) | trim) | truncate(160, True, '…')) }}{% endblock %}
 {% block body %}
 <article class="post imprint">
   <header class="imprint__header">

@@ -35,11 +35,15 @@ Implementation details (search path, output path, globals injection, static copy
 
 For human-oriented documentation, see [README.md](README.md).
 
+## Priorities when changing the generator
+
+Keep **design requirements**, **search engine optimization (SEO)**, and **accessibility** (including line-mode browsers such as Lynx) in mind for every change. When those goals conflict, resolve them in this order: design first, then SEO, then accessibility. Document notable tradeoffs in PRs or here.
+
 ## Accessibility and progressive enhancement
 
 - **No-JS baseline:** All meaningful content and navigation must work with JavaScript disabled. JS is only for theme preference (`static/theme.js`).
 - **Theme control:** The theme toggle is **hidden by default** in CSS and only shown when `theme.js` runs and adds the class `js` on `<html>`, so users do not see a non-functional control without JS.
-- **Design vs accessibility:** When the intended visual design conflicts with an accessibility or text-browser improvement, **follow the design** and document any tradeoff in PRs or here. Example: icon-only controls use `aria-label` plus a `.visually-hidden` text label when needed (header nav, profile social links) so screen readers and Lynx get real link text—`aria-label` alone is often ignored in line-mode browsers.
+- **Tradeoffs:** If design, SEO, and accessibility cannot all be fully satisfied, follow the **Priorities** order above. Example of balancing an icon-only visual with text-browser usability: use `aria-label` plus a `.visually-hidden` text label where needed (header nav, profile social links) so screen readers and Lynx get real link text—`aria-label` alone is often ignored in line-mode browsers.
 - **Images and icons:** Use non-empty, appropriate `alt` on `<img>` (see `profile.avatar_alt` in `data/README.md` for the profile image). Decorative Font Awesome icons use `aria-hidden="true"`; put the accessible name on the parent control (`aria-label` on `<a>` / the theme button).
 - **HTML quality:** Keep templates producing **valid, semantic HTML** (landmarks, headings, `lang`). After template changes, run `./build.sh` and fix issues; CI may run `html5validator` on `dist/`.
 
