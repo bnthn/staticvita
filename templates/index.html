@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+{% block title %}{{ profile.given_name }} {{ profile.family_name }} — Links{% endblock %}
+{% block body %}
+<div class="hero">
+  <h2>{{ profile.given_name }} {{ profile.family_name }}</h2>
+  {% if profile.subtitle %}
+  <p class="subtitle">{{ profile.subtitle }}</p>
+  {% endif %}
+</div>
+<ul class="link-list" role="list">
+  {% for link in links %}
+  <li>
+    <a href="{{ link.url }}" rel="noopener noreferrer">{{ link.label }}</a>
+  </li>
+  {% endfor %}
+</ul>
+<p class="cta-inline"><a href="cv.html">View CV</a></p>
+{% endblock %}

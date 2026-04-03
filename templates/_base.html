@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ profile.given_name }} {{ profile.family_name }}{% endblock %}</title>
+  {% if profile.summary %}
+  <meta name="description" content="{{ profile.summary | e }}">
+  {% endif %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <h1><a href="index.html">{{ profile.given_name }} {{ profile.family_name }}</a></h1>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="cv.html">CV</a>
+      </nav>
+    </header>
+    <main>
+      {% block body %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+      <p>&copy; {{ profile.given_name }} {{ profile.family_name }}</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+{% extends "_base.html" %}
+{% block title %}CV — {{ profile.given_name }} {{ profile.family_name }}{% endblock %}
+{% block body %}
+<div class="cv-top">
+  <h2>{{ profile.given_name }} {{ profile.family_name }}</h2>
+  {% if profile.subtitle %}
+  <p class="subtitle">{{ profile.subtitle }}</p>
+  {% endif %}
+  <ul class="cv-meta">
+    {% if profile.email %}
+    <li><a href="mailto:{{ profile.email | e }}">{{ profile.email }}</a></li>
+    {% endif %}
+    {% if profile.location %}
+    <li>{{ profile.location }}</li>
+    {% endif %}
+  </ul>
+  {% if profile.summary %}
+  <p class="cv-summary">{{ profile.summary }}</p>
+  {% endif %}
+</div>
+
+{% if cv.experience %}
+<section class="cv-section" aria-labelledby="exp-heading">
+  <h3 id="exp-heading">Experience</h3>
+  {% for job in cv.experience %}
+  <article class="job">
+    <p class="job-title">{{ job.role }}</p>
+    <p class="job-org">{{ job.organization }}</p>
+    <p class="job-dates">
+      {{ job.start }}{% if job.end %} — {{ job.end }}{% else %} — present{% endif %}
+    </p>
+    {% if job.bullets %}
+    <ul>
+      {% for b in job.bullets %}
+      <li>{{ b }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if cv.education %}
+<section class="cv-section" aria-labelledby="edu-heading">
+  <h3 id="edu-heading">Education</h3>
+  {% for edu in cv.education %}
+  <div class="edu-item">
+    <p class="job-title">{{ edu.degree }}</p>
+    <p class="job-org">{{ edu.institution }}{% if edu.year %} · {{ edu.year }}{% endif %}</p>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if cv.skills %}
+<section class="cv-section" aria-labelledby="skills-heading">
+  <h3 id="skills-heading">Skills</h3>
+  {% for group in cv.skills %}
+  <div class="skill-group">
+    <p class="skill-cat">{{ group.category }}</p>
+    <p class="skill-items">{{ group.entries | join(", ") }}</p>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if cv.projects %}
+<section class="cv-section" aria-labelledby="proj-heading">
+  <h3 id="proj-heading">Projects</h3>
+  {% for p in cv.projects %}
+  <div class="project-item">
+    <p class="job-title">
+      {% if p.url %}<a href="{{ p.url }}" rel="noopener noreferrer">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
+    </p>
+    {% if p.description %}
+    <p class="job-org">{{ p.description }}</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if cv.certifications %}
+<section class="cv-section" aria-labelledby="cert-heading">
+  <h3 id="cert-heading">Certifications</h3>
+  {% for c in cv.certifications %}
+  <div class="cert-item">
+    <p class="job-title">{{ c.name }}</p>
+    <p class="job-org">{{ c.issuer }}{% if c.year %} · {{ c.year }}{% endif %}</p>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+
+<p class="cta-inline"><a href="index.html">Back to links</a></p>
+{% endblock %}
