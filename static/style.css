@@ -361,6 +361,8 @@ section.cv-section h3 {
 .job-title {
   font-weight: 600;
   margin: 0 0 0.15rem;
+  font-size: 1rem;
+  line-height: inherit;
 }
 
 .job-org {
@@ -398,6 +400,7 @@ section.cv-section h3 {
   font-weight: 600;
   font-size: 0.95rem;
   margin: 0 0 0.25rem;
+  line-height: inherit;
 }
 
 .skill-items {

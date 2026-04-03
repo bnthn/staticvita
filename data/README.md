@@ -37,6 +37,8 @@ Use an empty array `[]` if you have no social links.
 
 Used on `cv.html`. Each subsection is optional: omit the key or use an empty array to hide that section.
 
+**Applicant parsers (ATS, resume matchers such as Jobscan, AI screeners):** Important keywords and conventional job titles should appear in the strings below—the built page exposes them as plain text. Experience bullets and `cv.skills.entries` are the main places to mirror job-description language. Do not put must-match phrases only in images or other non-copy channels.
+
 ### `cv.experience` (array)
 
 | Field | Type | Notes |

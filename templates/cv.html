@@ -27,7 +27,7 @@
   <h3 id="exp-heading">Experience</h3>
   {% for job in cv.experience %}
   <article class="job">
-    <p class="job-title">{{ job.role }}</p>
+    <h4 class="job-title">{{ job.role }}</h4>
     <p class="job-org">{{ job.organization }}</p>
     <p class="job-dates">
       {{ job.start }}{% if job.end %} — {{ job.end }}{% else %} — present{% endif %}
@@ -49,7 +49,7 @@
   <h3 id="edu-heading">Education</h3>
   {% for edu in cv.education %}
   <div class="edu-item">
-    <p class="job-title">{{ edu.degree }}</p>
+    <h4 class="job-title">{{ edu.degree }}</h4>
     <p class="job-org">{{ edu.institution }}{% if edu.year %} · {{ edu.year }}{% endif %}</p>
     {% if edu.bullets %}
     <ul>
@@ -68,7 +68,7 @@
   <h3 id="skills-heading">Skills</h3>
   {% for group in cv.skills %}
   <div class="skill-group">
-    <p class="skill-cat">{{ group.category }}</p>
+    <h4 class="skill-cat">{{ group.category }}</h4>
     <p class="skill-items">{{ group.entries | join(", ") }}</p>
   </div>
   {% endfor %}
@@ -80,9 +80,9 @@
   <h3 id="proj-heading">Projects</h3>
   {% for p in cv.projects %}
   <div class="project-item">
-    <p class="job-title">
+    <h4 class="job-title">
       {% if p.url %}<a href="{{ p.url }}" rel="noopener noreferrer">{{ p.name }}</a>{% else %}{{ p.name }}{% endif %}
-    </p>
+    </h4>
     {% if p.description %}
     <p class="job-org">{{ p.description }}</p>
     {% endif %}
@@ -96,7 +96,7 @@
   <h3 id="cert-heading">Certifications</h3>
   {% for c in cv.certifications %}
   <div class="cert-item">
-    <p class="job-title">{{ c.name }}</p>
+    <h4 class="job-title">{{ c.name }}</h4>
     <p class="job-org">{{ c.issuer }}{% if c.year %} · {{ c.year }}{% endif %}</p>
   </div>
   {% endfor %}
