@@ -1,3 +1,12 @@
 venv/
+.test-venv/
+.wheel-venv/
+.wheeltest/
 dist/
+# PyPA `python -m build` defaults to dist/; prefer --outdir python-dist so Pages output stays clean.
+dist/*.whl
+dist/*.tar.gz
+python-dist/
+*.egg-info/
+.eggs/
 __pycache__/

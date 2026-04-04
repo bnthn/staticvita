@@ -1,6 +1,6 @@
 # Site data (`site.json`)
 
-The build reads **`site.json`** in this directory (`build.py` loads it and passes the whole object into the Jinja environment). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `seo`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
+The build reads your chosen JSON (default **`data/site.json`**) and passes the whole object into the Jinja environment (`jinja_cv` / `jinja_cv.builder`). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `seo`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
 
 Use valid JSON (double quotes, no trailing commas). After editing, run `./build.sh` from the repository root.
 
@@ -85,7 +85,7 @@ Each element:
 
 ## `seo` (object, optional)
 
-Controls canonical URLs, Open Graph meta tags, optional **Person** JSON-LD on the home page, and—when `base_url` is set—generated **`sitemap.xml`** and **`robots.txt`** in `dist/` (written by `build.py` after HTML render). Omit the key or leave `base_url` empty to skip absolute URLs and sitemap generation (e.g. local `file://` preview); in that case any existing `dist/sitemap.xml` / `dist/robots.txt` from a previous build are removed.
+Controls canonical URLs, Open Graph meta tags, optional **Person** JSON-LD on the home page, and—when `base_url` is set—generated **`sitemap.xml`** and **`robots.txt`** in `dist/` (written by the generator after HTML render). Omit the key or leave `base_url` empty to skip absolute URLs and sitemap generation (e.g. local `file://` preview); in that case any existing `dist/sitemap.xml` / `dist/robots.txt` from a previous build are removed.
 
 | Field | Type | Notes |
 |--------|------|--------|

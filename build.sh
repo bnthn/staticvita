@@ -6,7 +6,7 @@ cd "$ROOT"
 
 if [[ ! -x venv/bin/python ]]; then
   python3 -m venv venv
-  venv/bin/pip install -r requirements.txt
 fi
 
-venv/bin/python build.py
+venv/bin/pip install -q -e .
+venv/bin/jinja-cv

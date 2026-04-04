@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jinja-cv"
+version = "0.1.0"
+description = "Static CV/site generator using Jinja2 and JSON site data"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+dependencies = [
+    "staticjinja>=5.0.0",
+]
+
+[project.scripts]
+jinja-cv = "jinja_cv.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "build",
+    "html5validator",
+    "twine",
+]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/.test-venv",
+    "/venv",
+    "/dist",
+    "/python-dist",
+    "/.tmp-noproj",
+    "/.cursor",
+    "/.forgejo",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["jinja_cv"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"templates" = "jinja_cv/templates"
+"static" = "jinja_cv/static"
