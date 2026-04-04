@@ -29,7 +29,7 @@ Used on the links page. Each item is an object:
 | `label` | string | Accessible name / `aria-label` for the icon link. |
 | `url` | string | Full URL. |
 | `icon` | string or omit | Short name mapped to Font Awesome in `_icons.html`: `linkedin`, `github`, `gitlab`, `codeberg`. Anything else falls back to a generic link icon. |
-| `fa_class` | string or omit | If set, used **instead of** `icon` for the `<i>` classes (Font Awesome 6), e.g. `fa-solid fa-code-branch`. |
+| `fa_class` | string or omit | If set, used **instead of** `icon` for the `<i>` classes (Font Awesome 7), e.g. `fa-solid fa-code-branch`. |
 
 Use an empty array `[]` if you have no social links.
 
