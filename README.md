@@ -2,6 +2,8 @@
 
 A small static site generator for a personal CV or resume. [Jinja2](https://jinja.palletsprojects.com/) templates are rendered with data from JSON; CSS, JavaScript, and images are copied into the build output. It aims for a minimal footprint—including very little client-side JavaScript—and for output that reads well to machines (search engines, CV parsers) and to assistive technologies such as screen readers.
 
+**Demo:** [bnthn.codeberg.page/staticvita](https://bnthn.codeberg.page/staticvita)
+
 ## What it does
 
 - **[data/site.json](data/site.json)** supplies globals (profile, links, CV sections) to every template.

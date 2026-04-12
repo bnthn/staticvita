@@ -1,4 +1,5 @@
 # Build static site to dist/ and publish via git-pages (e.g. Codeberg Pages).
+# Trigger: push any git tag (see `on:` below). Not on branch pushes.
 # Codeberg hosted runners (e.g. codeberg-*) use ghcr.io/catthehacker/ubuntu:act-latest — use apt, not apk.
 # Self-hosted runners with the default "docker" label often use Alpine; adjust install commands to match the job image.
 # For Pages not on codeberg.page, set repository variable PAGES_SITE to the site base URL (with trailing slash).
@@ -7,8 +8,8 @@ name: Pages
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    tags:
+      - "*"
 
 jobs:
   publish:
@@ -26,7 +27,6 @@ jobs:
           .venv/bin/staticvita
 
       - name: Deploy to Pages
-        if: ${{ forge.ref == 'refs/heads/main' }}
         uses: https://codeberg.org/git-pages/action@v2
         with:
           site: ${{ vars.PAGES_SITE || format('https://{0}.codeberg.page/{1}/', forge.repository_owner, forge.event.repository.name) }}
