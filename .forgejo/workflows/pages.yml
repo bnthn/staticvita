@@ -1,5 +1,6 @@
 # Build static site to dist/ and publish via git-pages (e.g. Codeberg Pages).
-# Requires a Forgejo runner with the "docker" label (Forgejo default image is Alpine).
+# Codeberg hosted runners (e.g. codeberg-*) use ghcr.io/catthehacker/ubuntu:act-latest — use apt, not apk.
+# Self-hosted runners with the default "docker" label often use Alpine; adjust install commands to match the job image.
 # For Pages not on codeberg.page, set repository variable PAGES_SITE to the site base URL (with trailing slash).
 
 name: Pages
@@ -17,7 +18,8 @@ jobs:
 
       - name: Install Python and build
         run: |
-          apk add --no-cache python3 py3-pip
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip python3-venv
           python3 -m venv .venv
           .venv/bin/pip install --upgrade pip
           .venv/bin/pip install -e .
