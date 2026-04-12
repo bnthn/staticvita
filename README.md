@@ -1,6 +1,6 @@
-# jinja-cv
+# staticvita
 
-A small static site generator for a personal CV or resume. [Jinja2](https://jinja.palletsprojects.com/) templates are rendered with data from JSON; CSS, JavaScript, and images are copied into the build output.
+A small static site generator for a personal CV or resume. [Jinja2](https://jinja.palletsprojects.com/) templates are rendered with data from JSON; CSS, JavaScript, and images are copied into the build output. It aims for a minimal footprint—including very little client-side JavaScript—and for output that reads well to machines (search engines, CV parsers) and to assistive technologies such as screen readers.
 
 ## What it does
 
@@ -22,7 +22,7 @@ From the repository root:
 ./build.sh
 ```
 
-This creates a local virtual environment at `venv/` if needed, installs the package in editable mode (`pip install -e .` per [requirements.txt](requirements.txt)), and runs **`jinja-cv`**.
+This creates a local virtual environment at `venv/` if needed, installs the package in editable mode (`pip install -e .` per [requirements.txt](requirements.txt)), and runs **`staticvita`**.
 
 Alternatively:
 
@@ -30,27 +30,27 @@ Alternatively:
 python3 -m venv venv
 source venv/bin/activate   # on Windows: venv\Scripts\activate
 pip install -r requirements.txt
-jinja-cv
+staticvita
 ```
 
 Use a different JSON file (paths are relative to the project root, i.e. current directory by default):
 
 ```bash
-jinja-cv -i site.ben.json    # tries ./site.ben.json then data/site.ben.json
-jinja-cv -i data/site.ben.json
+staticvita -i site.ben.json    # tries ./site.ben.json then data/site.ben.json
+staticvita -i data/site.ben.json
 ```
 
 Build from another directory as project root:
 
 ```bash
-jinja-cv -C /path/to/project -i data/site.json
+staticvita -C /path/to/project -i data/site.json
 ```
 
 Show help and version:
 
 ```bash
-jinja-cv -h
-jinja-cv --version
+staticvita -h
+staticvita --version
 ```
 
 ### Repo-local build (cwd-independent)
@@ -66,7 +66,7 @@ python scripts/build.py
 ### Module invocation
 
 ```bash
-python -m jinja_cv
+python -m staticvita
 ```
 
 Open [dist/index.html](dist/index.html) in a browser, or serve the `dist/` directory with any static file server.
@@ -74,10 +74,10 @@ Open [dist/index.html](dist/index.html) in a browser, or serve the `dist/` direc
 ## Install from PyPI (when published)
 
 ```bash
-pip install jinja-cv
+pip install staticvita
 ```
 
-Then run `jinja-cv` in a directory that contains your `data/` JSON (and optional `templates/` / `static/` overrides). Stock templates and base static ship in the package; a project `static/` directory is merged on top.
+Then run `staticvita` in a directory that contains your `data/` JSON (and optional `templates/` / `static/` overrides). Stock templates and base static ship in the package; a project `static/` directory is merged on top.
 
 ## Publishing to PyPI (maintainers)
 
@@ -107,6 +107,6 @@ Edit **source** only:
 
 **Do not hand-edit `dist/`.** It is overwritten on every build and must not be treated as the source of truth for changes.
 
-To change how the site is built, edit [jinja_cv/](jinja_cv/) (builder and CLI), [pyproject.toml](pyproject.toml), [build.sh](build.sh), or [requirements.txt](requirements.txt) deliberately. The `venv/` directory is local and is not part of the project’s source layout.
+To change how the site is built, edit [staticvita/](staticvita/) (builder and CLI), [pyproject.toml](pyproject.toml), [build.sh](build.sh), or [requirements.txt](requirements.txt) deliberately. The `venv/` directory is local and is not part of the project’s source layout.
 
 For guidance aimed at automated coding assistants, see [AGENTS.md](AGENTS.md).

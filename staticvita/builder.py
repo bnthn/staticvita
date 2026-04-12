@@ -60,19 +60,19 @@ def _resolve_template_dir(project_root: Path, stack: ExitStack) -> Path:
     from importlib.resources import as_file, files
 
     try:
-        bundled = files("jinja_cv") / "templates"
+        bundled = files("staticvita") / "templates"
         if bundled.is_dir():
             return Path(stack.enter_context(as_file(bundled)))
     except ModuleNotFoundError:
         pass
-    # Editable install from a source checkout: templates/ live next to jinja_cv/.
+    # Editable install from a source checkout: templates/ live next to staticvita/.
     pkg_dir = Path(__file__).resolve().parent
     checkout = pkg_dir.parent / "templates"
     if checkout.is_dir():
         return checkout.resolve()
     raise RuntimeError(
         f"missing templates directory: {local} "
-        "(install jinja-cv from a wheel, or keep templates/ in the project, "
+        "(install staticvita from a wheel, or keep templates/ in the project, "
         "or run from a package source checkout)"
     )
 
@@ -83,7 +83,7 @@ def _copy_static_assets(project_root: Path, dist_static: Path, stack: ExitStack)
 
     copied_base = False
     try:
-        bundled = files("jinja_cv") / "static"
+        bundled = files("staticvita") / "static"
         if bundled.is_dir():
             src = Path(stack.enter_context(as_file(bundled)))
             shutil.copytree(src, dist_static, dirs_exist_ok=True)

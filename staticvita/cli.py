@@ -4,8 +4,8 @@ import argparse
 import sys
 from pathlib import Path
 
-from jinja_cv import __version__
-from jinja_cv.builder import build_site
+from staticvita import __version__
+from staticvita.builder import build_site
 
 
 def resolve_data_path(project: Path, input_arg: str | None) -> Path:
@@ -39,7 +39,7 @@ def resolve_data_path(project: Path, input_arg: str | None) -> Path:
 
 def _parse(argv: list[str] | None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        prog="jinja-cv",
+        prog="staticvita",
         description="Build static HTML from Jinja templates and site JSON.",
     )
     parser.add_argument(

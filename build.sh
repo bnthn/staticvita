@@ -9,4 +9,4 @@ if [[ ! -x venv/bin/python ]]; then
 fi
 
 venv/bin/pip install -q -e .
-venv/bin/jinja-cv
+venv/bin/staticvita "$@"

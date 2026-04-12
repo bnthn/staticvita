@@ -4,8 +4,8 @@
 import sys
 from pathlib import Path
 
-from jinja_cv.builder import build_site
-from jinja_cv.cli import resolve_data_path
+from staticvita.builder import build_site
+from staticvita.cli import resolve_data_path
 
 
 def main() -> None:

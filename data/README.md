@@ -1,6 +1,6 @@
 # Site data (`site.json`)
 
-The build reads your chosen JSON (default **`data/site.json`**) and passes the whole object into the Jinja environment (`jinja_cv` / `jinja_cv.builder`). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `seo`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
+The build reads your chosen JSON (default **`data/site.json`**) and passes the whole object into the Jinja environment (`staticvita` / `staticvita.builder`). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `seo`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
 
 Use valid JSON (double quotes, no trailing commas). After editing, run `./build.sh` from the repository root.
 

@@ -55,8 +55,8 @@
     ],
     "projects": [
       {
-        "name": "jinja-cv",
-        "url": "https://codeberg.org/you/jinja-cv",
+        "name": "staticvita",
+        "url": "https://codeberg.org/you/staticvita",
         "description": "Static CV and link page built with staticjinja."
       }
     ],

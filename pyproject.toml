@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "jinja-cv"
+name = "staticvita"
 version = "0.1.0"
 description = "Static CV/site generator using Jinja2 and JSON site data"
 readme = "README.md"
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-jinja-cv = "jinja_cv.cli:main"
+staticvita = "staticvita.cli:main"
 
 [project.optional-dependencies]
 dev = [
@@ -35,8 +35,8 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["jinja_cv"]
+packages = ["staticvita"]
 
 [tool.hatch.build.targets.wheel.force-include]
-"templates" = "jinja_cv/templates"
-"static" = "jinja_cv/static"
+"templates" = "staticvita/templates"
+"static" = "staticvita/static"

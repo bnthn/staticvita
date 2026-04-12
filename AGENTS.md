@@ -12,7 +12,7 @@ From the repository root:
 
 The package is defined in [`pyproject.toml`](pyproject.toml); dependencies are declared there (`staticjinja`). [requirements.txt](requirements.txt) pins an editable install (`-e .`) for local development.
 
-Equivalent: activate a venv, `pip install -r requirements.txt`, then `jinja-cv` (or `python -m jinja_cv`). To build from this repo with a **fixed project root** independent of cwd, use `python scripts/build.py` after an editable install.
+Equivalent: activate a venv, `pip install -r requirements.txt`, then `staticvita` (or `python -m staticvita`). To build from this repo with a **fixed project root** independent of cwd, use `python scripts/build.py` after an editable install.
 
 ## Where to edit
 
@@ -33,7 +33,7 @@ When you change **`templates/`** in ways that affect which JSON fields exist, ho
 
 Keep client-side **JavaScript minimal**. Prefer **static HTML/CSS** and build-time Jinja for layout and visual effects. The theme toggle (`static/theme.js`) is the intended small exception.
 
-Implementation details (search path, output path, globals injection, static copy) live in [`jinja_cv/builder.py`](jinja_cv/builder.py) and the CLI in [`jinja_cv/cli.py`](jinja_cv/cli.py).
+Implementation details (search path, output path, globals injection, static copy) live in [`staticvita/builder.py`](staticvita/builder.py) and the CLI in [`staticvita/cli.py`](staticvita/cli.py).
 
 For human-oriented documentation, see [README.md](README.md).
 
