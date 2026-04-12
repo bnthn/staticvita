@@ -1,0 +1,32 @@
+# Build static site to dist/ and publish via git-pages (e.g. Codeberg Pages).
+# Requires a Forgejo runner with the "docker" label (Forgejo default image is Alpine).
+# For Pages not on codeberg.page, set repository variable PAGES_SITE to the site base URL (with trailing slash).
+
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: docker
+    steps:
+      - uses: https://code.forgejo.org/actions/checkout@v4
+
+      - name: Install Python and build
+        run: |
+          apk add --no-cache python3 py3-pip
+          python3 -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -e .
+          .venv/bin/staticvita
+
+      - name: Deploy to Pages
+        if: ${{ forge.ref == 'refs/heads/main' }}
+        uses: https://codeberg.org/git-pages/action@v2
+        with:
+          site: ${{ vars.PAGES_SITE || format('https://{0}.codeberg.page/{1}/', forge.repository_owner, forge.event.repository.name) }}
+          token: ${{ forge.token }}
+          source: dist/

@@ -1,7 +1,7 @@
 {
   "profile": {
-    "header_title": "alexander",
-    "given_name": "Alex",
+    "header_title": "developer",
+    "given_name": "Example",
     "family_name": "Developer",
     "avatar": "images/avatar.svg",
     "subtitle": "Software engineer · Open source",
@@ -56,7 +56,7 @@
     "projects": [
       {
         "name": "staticvita",
-        "url": "https://codeberg.org/you/staticvita",
+        "url": "https://codeberg.org/bnthn/staticvita",
         "description": "Static CV and link page built with staticjinja."
       }
     ],
