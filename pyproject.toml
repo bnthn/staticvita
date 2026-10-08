@@ -31,6 +31,7 @@ exclude = [
     "/.tmp-noproj",
     "/.cursor",
     "/.forgejo",
+    "/.github",
 ]
 
 [tool.hatch.build.targets.wheel]

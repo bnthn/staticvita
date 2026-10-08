@@ -1,3 +1,9 @@
+# Codeberg Terms of Use § 2 (1) 7 forbid sharing projects that mostly consist of
+# code written by generative-AI tools:
+# https://codeberg.org/Codeberg/org/src/branch/main/TermsOfUse.md
+# This workflow is not for codeberg.org. It can still be built on a self-hosted
+# Forgejo instance or runner.
+#
 # Build static site to dist/ and publish via git-pages (e.g. Codeberg Pages).
 # Trigger: push any git tag (see `on:` below). Not on branch pushes.
 # Codeberg hosted runners (e.g. codeberg-*) use ghcr.io/catthehacker/ubuntu:act-latest — use apt, not apk.
