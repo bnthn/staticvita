@@ -21,7 +21,8 @@ Equivalent: activate a venv, `pip install -r requirements.txt`, then `staticvita
 | Structured content (profile, CV sections, links) | `data/site.json` |
 | Schema / field docs for `site.json` (keep in sync with templates) | `data/README.md` |
 | HTML / layout | `templates/` |
-| CSS, JS, images | `static/` (base styles `static/style.css`; optional `site.json` plugin styles `static/plugin.css`, linked from `_base.html`) |
+| CSS, JS | `static/` (base styles `static/style.css`; optional `site.json` plugin styles `static/plugin.css`, linked from `_base.html`) |
+| User images (e.g. profile picture) | `data/` — non-JSON/non-Markdown files are copied into `dist/static/` at build time; the default avatar ships at `data/images/avatar.svg`. Only the shipped `data/` files are tracked; user content in `data/` is gitignored. |
 
 When you change **`templates/`** in ways that affect which JSON fields exist, how they are used, or optional vs required behavior, or when you change the **`data/site.json`** shape or conventions, update **`data/README.md`** so it stays accurate.
 

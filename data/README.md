@@ -4,6 +4,10 @@ The build reads your chosen JSON (default **`data/site.json`**) and passes the w
 
 Use valid JSON (double quotes, no trailing commas). After editing, run `./build.sh` from the repository root.
 
+## Assets in `data/`
+
+Files in `data/` that are not JSON (site data) or Markdown (docs) are treated as site assets: they are copied into `static/` in the build output and served under `/static/…`. This is where profile pictures and other user images belong (e.g. `data/images/avatar.jpg` referenced as `images/avatar.jpg`). The default placeholder graphic ships as **`data/images/avatar.svg`**. `data/` holds your personal content, so everything except the shipped template files (`README.md`, `site.json`, `images/avatar.svg`) is gitignored.
+
 ## `profile` (object)
 
 Used on the links page (`index.html`) and the CV page (`cv.html`).
@@ -13,7 +17,7 @@ Used on the links page (`index.html`) and the CV page (`cv.html`).
 | `given_name` | string | Shown in titles and headings. |
 | `family_name` | string | Shown in titles and headings. |
 | `header_title` | string or omit | If set to a non-empty string, used for the site header `<h1>` link on all pages instead of `given_name` + `family_name`. Omit or leave empty to use the name. |
-| `avatar` | string or omit | Path **relative to `static/`** (e.g. `images/avatar.svg`). If omitted or empty, initials are shown from the name. |
+| `avatar` | string or omit | Path **relative to `data/`** (e.g. `images/avatar.svg`); files in `data/` (or `static/`) are served under `static/…`. If omitted or empty, initials are shown from the name. |
 | `avatar_alt` | string or omit | `alt` text for the profile `<img>`. If omitted, defaults to `Portrait of {given_name} {family_name}` or `Profile picture` if both names are empty. |
 | `subtitle` | string or omit | Tagline under the name. |
 | `email` | string or omit | Rendered as a `mailto:` link on the CV. |
@@ -90,7 +94,7 @@ Controls canonical URLs, Open Graph meta tags, optional **Person** JSON-LD on th
 | Field | Type | Notes |
 |--------|------|--------|
 | `base_url` | string or omit | Public site origin **without** a trailing slash (e.g. `https://yoursite.example`). Used for `link rel="canonical"`, `og:url`, JSON-LD `url`, and sitemap `loc` values. |
-| `og_image` | string or omit | Open Graph image for link previews: either a full `https://…` (or `http://…`) URL, or a path **relative to `static/`** (e.g. `images/avatar.svg`), resolved against `base_url` as `/static/…`. |
+| `og_image` | string or omit | Open Graph image for link previews: either a full `https://…` (or `http://…`) URL, or a path **relative to `data/`** (e.g. `images/avatar.svg`), resolved against `base_url` as `/static/…`. |
 
 Optional overrides for `meta name="description"`:
 

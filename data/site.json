@@ -56,7 +56,7 @@
     "projects": [
       {
         "name": "staticvita",
-        "url": "https://codeberg.org/bnthn/staticvita",
+        "url": "https://github.com/bnthn/staticvita",
         "description": "Static CV and link page built with staticjinja."
       }
     ],

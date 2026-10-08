@@ -10,3 +10,10 @@ python-dist/
 *.egg-info/
 .eggs/
 __pycache__/
+# data/ holds user content; only the shipped template files below are tracked.
+data/*
+!data/README.md
+!data/site.json
+!data/images/
+data/images/*
+!data/images/avatar.svg

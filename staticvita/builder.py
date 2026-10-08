@@ -102,6 +102,24 @@ def _copy_static_assets(project_root: Path, dist_static: Path, stack: ExitStack)
         shutil.copytree(proj_static, dist_static, dirs_exist_ok=True)
 
 
+def _copy_data_assets(project_root: Path, dist_static: Path) -> None:
+    """Copy user assets (e.g. images) from data/ into dist/static/.
+
+    JSON site data and Markdown documentation in data/ are not site assets and
+    are skipped.
+    """
+    data_dir = project_root / "data"
+    if not data_dir.is_dir():
+        return
+    for src in data_dir.rglob("*"):
+        if not src.is_file() or src.suffix.lower() in {".json", ".md"}:
+            continue
+        rel = src.relative_to(data_dir)
+        dest = dist_static / rel
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dest)
+
+
 def build_site(
     project_root: Path,
     data_path: Path,
@@ -130,5 +148,6 @@ def build_site(
         )
         site.render()
         _copy_static_assets(project_root, out_dir / "static", stack)
+        _copy_data_assets(project_root, out_dir / "static")
 
     write_seo_files(data, out_dir)

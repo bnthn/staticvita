@@ -6,9 +6,9 @@ A small static site generator for a personal CV or resume. [Jinja2](https://jinj
 
 ## What it does
 
-- **[data/site.json](data/site.json)** supplies globals (profile, links, CV sections) to every template.
+- **[data/site.json](data/site.json)** supplies globals (profile, links, CV sections) to every template. Other non-JSON files in `data/` (e.g. `data/images/avatar.svg`) are user assets, copied into `dist/static/`.
 - **[templates/](templates/)** holds HTML templates (for example `index.html`, `cv.html`, and partials such as `_base.html`).
-- **[static/](static/)** holds assets that are copied to `dist/static/` after HTML is generated.
+- **[static/](static/)** holds theme assets that are copied to `dist/static/` after HTML is generated.
 
 The build writes everything under **[dist/](dist/)**, which is generated output only.
 
@@ -96,16 +96,17 @@ twine upload python-dist/*
 | What to change | Where |
 |----------------|--------|
 | Copy, profile, links, experience, education, etc. | [data/site.json](data/site.json) |
+| Profile picture / user images | `data/` (e.g. `data/images/avatar.svg`; copied into `dist/static/`) |
 | Page structure and markup | [templates/](templates/) |
-| Styles, scripts, images | [static/](static/) |
+| Styles, scripts | [static/](static/) |
 
 ## Contributing
 
 Edit **source** only:
 
-- `data/` — structured site and CV data
+- `data/` — structured site and CV data, plus user images (copied into `dist/static/`)
 - `templates/` — Jinja HTML
-- `static/` — assets served as-is (after copy)
+- `static/` — theme assets served as-is (after copy)
 
 **Do not hand-edit `dist/`.** It is overwritten on every build and must not be treated as the source of truth for changes.
 
