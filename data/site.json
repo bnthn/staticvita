@@ -73,9 +73,9 @@
     "og_image": "images/avatar.svg"
   },
   "imprint": {
-    "label": "Impressum",
+    "label": "Imprint",
     "url": "imprint.html",
-    "page_title": "Impressum",
+    "page_title": "Imprint",
     "intro": "Replace this page with your legally required provider identification (e.g. § 5 TMG / § 55 RStV). The placeholder text below is not legal advice.",
     "sections": [
       {
