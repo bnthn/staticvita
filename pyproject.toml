@@ -4,10 +4,13 @@ build-backend = "hatchling.build"
 
 [project]
 name = "staticvita"
-version = "0.1.0"
+version = "0.1"
 description = "Static CV/site generator using Jinja2 and JSON site data"
 readme = "README.md"
 license = "MIT"
+authors = [
+    { name = "Benedict Benthien", email = "bnthn@posteo.de" },
+]
 requires-python = ">=3.9"
 dependencies = [
     "staticjinja>=5.0.0",
@@ -15,6 +18,11 @@ dependencies = [
 
 [project.scripts]
 staticvita = "staticvita.cli:main"
+
+[project.urls]
+Homepage = "https://bnthn.github.io/staticvita"
+Repository = "https://github.com/bnthn/staticvita"
+Issues = "https://github.com/bnthn/staticvita/issues"
 
 [project.optional-dependencies]
 dev = [

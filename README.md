@@ -4,94 +4,44 @@ A small static site generator for a personal CV or resume. [Jinja2](https://jinj
 
 **Demo:** [bnthn.github.io/staticvita](https://bnthn.github.io/staticvita)
 
-## What it does
-
-- **[data/site.json](data/site.json)** supplies globals (profile, links, CV sections) to every template. Other non-JSON files in `data/` (e.g. `data/images/avatar.svg`) are user assets, copied into `dist/static/`.
-- **[templates/](templates/)** holds HTML templates (for example `index.html`, `cv.html`, and partials such as `_base.html`).
-- **[static/](static/)** holds theme assets that are copied to `dist/static/` after HTML is generated.
-
-The build writes everything under **[dist/](dist/)**, which is generated output only.
-
 ## Requirements
 
 - Python 3.9+
 
-## Build the site (this repository)
-
-From the repository root:
-
-```bash
-./build.sh
-```
-
-This creates a local virtual environment at `venv/` if needed, installs the package in editable mode (`pip install -e .` per [requirements.txt](requirements.txt)), and runs **`staticvita`**.
-
-Alternatively:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate   # on Windows: venv\Scripts\activate
-pip install -r requirements.txt
-staticvita
-```
-
-Use a different JSON file (paths are relative to the project root, i.e. current directory by default):
-
-```bash
-staticvita -i site.ben.json    # tries ./site.ben.json then data/site.ben.json
-staticvita -i data/site.ben.json
-```
-
-Build from another directory as project root:
-
-```bash
-staticvita -C /path/to/project -i data/site.json
-```
-
-Show help and version:
-
-```bash
-staticvita -h
-staticvita --version
-```
-
-### Repo-local build (cwd-independent)
-
-To build using this repository as the project root **regardless of your shell’s current directory** (same as before a top-level `build.py` existed):
-
-```bash
-python scripts/build.py
-```
-
-(Requires the package importable, e.g. after `pip install -e .`.)
-
-### Module invocation
-
-```bash
-python -m staticvita
-```
-
-Open [dist/index.html](dist/index.html) in a browser, or serve the `dist/` directory with any static file server.
-
-## Install from PyPI (when published)
+## Install
 
 ```bash
 pip install staticvita
 ```
 
-Then run `staticvita` in a directory that contains your `data/` JSON (and optional `templates/` / `static/` overrides). Stock templates and base static ship in the package; a project `static/` directory is merged on top.
+## Build a site
 
-## Publishing to PyPI (maintainers)
+Run `staticvita` in a project directory. By default it reads `data/site.json` and writes the site to `dist/`.
 
-Use a separate output directory so wheel/sdist files are not mixed into the static site’s `dist/` (used for Pages, etc.):
+Stock templates and base styles ship in the package. A `templates/` directory in the project replaces them. A project `static/` directory is merged on top of the packaged assets.
 
 ```bash
-pip install build twine
-python -m build --outdir python-dist
-twine upload python-dist/*
+staticvita
+staticvita -i site.ben.json    # tries ./site.ben.json then data/site.ben.json
+staticvita -i data/site.ben.json
+staticvita -C /path/to/project -i data/site.json
+staticvita -h
+staticvita --version
 ```
 
-## Customizing content
+Open `dist/index.html` in a browser, or serve the `dist/` directory with any static file server.
+
+### This repository
+
+From a clone, at the repository root:
+
+```bash
+./build.sh
+```
+
+That creates a local virtual environment at `venv/` if needed, installs the package, and runs `staticvita` on this repo’s `data/site.json`.
+
+## What to edit
 
 | What to change | Where |
 |----------------|--------|
@@ -100,16 +50,6 @@ twine upload python-dist/*
 | Page structure and markup | [templates/](templates/) |
 | Styles, scripts | [static/](static/) |
 
-## Contributing
+`data/site.json` supplies profile, links, and CV sections to every template. Other non-JSON files in `data/` are copied into `dist/static/`. `dist/` is generated on each build.
 
-Edit **source** only:
-
-- `data/` — structured site and CV data, plus user images (copied into `dist/static/`)
-- `templates/` — Jinja HTML
-- `static/` — theme assets served as-is (after copy)
-
-**Do not hand-edit `dist/`.** It is overwritten on every build and must not be treated as the source of truth for changes.
-
-To change how the site is built, edit [staticvita/](staticvita/) (builder and CLI), [pyproject.toml](pyproject.toml), [build.sh](build.sh), or [requirements.txt](requirements.txt) deliberately. The `venv/` directory is local and is not part of the project’s source layout.
-
-For guidance aimed at automated coding assistants, see [AGENTS.md](AGENTS.md).
+Contributor notes, including how the package is built and published, are in [CONTRIBUTING.md](CONTRIBUTING.md).
