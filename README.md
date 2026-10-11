@@ -4,7 +4,7 @@ A lightweight yet customizable static site generator built on [staticjinja](http
 
 **Demo:** [bnthn.github.io/staticvita](https://bnthn.github.io/staticvita)
 
-<p><img alt="Links page, light mode on the top left and dark mode on the bottom right" src="screenshots/links.png" width="47%"> <img alt="Top of the CV page in light mode" src="screenshots/cv_light_top.png" width="47%">
+<p><img alt="Links page, light mode on the top left and dark mode on the bottom right" src="screenshots/links.png" width="48%"> <img alt="Top of the CV page in light mode" src="screenshots/cv_light_top.png" width="48%">
 
 ## Requirements
 
