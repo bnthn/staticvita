@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "staticvita"
-version = "0.2"
+version = "0.3"
 description = "Static CV/site generator using Jinja2 and JSON site data"
 readme = "README.md"
 license = "MIT"
