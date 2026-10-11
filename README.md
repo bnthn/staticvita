@@ -1,8 +1,10 @@
-# staticvita
+# staticvita 🪪
 
-A small static site generator for a personal CV or resume. [Jinja2](https://jinja.palletsprojects.com/) templates are rendered with data from JSON; CSS, JavaScript, and images are copied into the build output. It aims for a minimal footprint—including very little client-side JavaScript—and for output that reads well to machines (search engines, CV parsers) and to assistive technologies such as screen readers.
+A small static site generator to create a link tree and CV from JSON. It aims for a minimal footprint and for output that reads well to machines (search engines, CV parsers) and to assistive technologies such as screen readers.
 
 **Demo:** [bnthn.github.io/staticvita](https://bnthn.github.io/staticvita)
+
+<p><img alt="Links page, light mode on the top left and dark mode on the bottom right" src="screenshots/links.png" width="31%"> <img alt="Top of the CV page in light mode" src="screenshots/cv_light_top.png" width="31%"> <img alt="Bottom of the CV page in dark mode" src="screenshots/cv_dark_bottom.png" width="31%"></p>
 
 ## Requirements
 
