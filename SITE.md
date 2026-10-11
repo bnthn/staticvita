@@ -8,7 +8,7 @@ Use valid JSON (double quotes, no trailing commas). After editing, run `staticvi
 
 `profile.avatar` is a path relative to the directory that contains the JSON file (`avatar.svg`, or `screenshots/portrait.png`). The file is copied into `dist/static/images/` under its filename and served as `/static/images/…`. When `seo.base_url` is set, that same picture is the Open Graph image. Theme files stay beside that folder in `dist/static/`. `dist/` is deleted and written again on every build.
 
-The profile picture is often `avatar.svg` or `avatar.png` next to the JSON file. Starter copies ship as **`site.example.json`** and **`avatar.example.svg`**. Copy or rename them to drop the `.example` suffix.
+The example JSON includes `"avatar": "avatar.svg"` so the field is visible. That file is not copied into the project. If it is absent, the build uses the packaged portrait and serves it as `static/images/avatar.svg`. A file you add at the path in `profile.avatar` replaces it. Any other missing path stops the build.
 
 ## `profile` (object)
 
@@ -19,7 +19,7 @@ Used on the links page (`index.html`) and the CV page (`cv.html`).
 | `given_name` | string | Shown in titles and headings. |
 | `family_name` | string | Shown in titles and headings. |
 | `header_title` | string or omit | If set to a non-empty string, used for the site header `<h1>` link on all pages instead of `given_name` + `family_name`. Omit or leave empty to use the name. |
-| `avatar` | string or omit | Path **relative to the directory that contains the JSON file** (e.g. `avatar.svg` or `photos/portrait.png`). Copied to `static/images/<filename>`. If omitted or empty, initials are shown from the name. |
+| `avatar` | string or omit | Path **relative to the directory that contains the JSON file** (e.g. `avatar.svg` or `photos/portrait.png`). Copied to `static/images/<filename>`. `avatar.svg`, when that file is absent, uses the packaged portrait. If omitted or empty, initials are shown from the name. |
 | `avatar_alt` | string or omit | `alt` text for the profile `<img>`. If omitted, defaults to `Portrait of {given_name} {family_name}` or `Profile picture` if both names are empty. |
 | `subtitle` | string or omit | Tagline under the name. |
 | `email` | string or omit | Rendered as a `mailto:` link on the CV. |

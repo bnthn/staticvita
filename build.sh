@@ -22,16 +22,6 @@ fi
 if [[ ! -f site.json ]]; then
   cp site.example.json site.json
 fi
-has_avatar=0
-for ext in svg png jpg jpeg webp gif avif; do
-  if [[ -f "avatar.${ext}" ]]; then
-    has_avatar=1
-    break
-  fi
-done
-if [[ "$has_avatar" -eq 0 ]]; then
-  cp avatar.example.svg avatar.svg
-fi
 
 echo "build.sh: building site into dist/..."
 venv/bin/python -m staticvita "$@"

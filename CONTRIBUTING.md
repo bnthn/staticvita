@@ -10,7 +10,7 @@ This repository is a **static CV site**: Jinja2 templates plus JSON data plus st
 | Schema / field docs for `site.json` (keep in sync with templates) | `SITE.md` |
 | HTML / layout | `templates/` |
 | CSS, JS | `static/` (base styles `static/style.css`; optional `site.json` plugin styles `static/plugin.css`, linked from `_base.html`) |
-| User images (e.g. profile picture) | Paths in `site.json`, relative to that file. Copied into `dist/static/images/` at build time. The starter avatar is `avatar.example.svg`. Working copies (`site.json`, `avatar.svg`, and other `avatar` image names) are gitignored. |
+| User images (e.g. profile picture) | Paths in `site.json`, relative to that file. Copied into `dist/static/images/` at build time. `avatar.example.svg` is the packaged portrait used when `avatar.svg` is named but absent. Working copies (`site.json` and user avatar files) are gitignored. |
 | Generator (builder and CLI) | `staticvita/` |
 | Package metadata | `pyproject.toml` |
 
