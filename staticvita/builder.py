@@ -9,7 +9,7 @@ from xml.sax.saxutils import escape as xml_escape
 from staticjinja import Site
 
 HTML_PAGES = ("index.html", "cv.html", "imprint.html")
-IMAGE_SUFFIXES = {".svg", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"}
+DEFAULT_AVATAR = "avatar.example.svg"
 
 
 def _normalized_base_url(seo) -> str:
@@ -109,6 +109,23 @@ def _copy_static_assets(project_root: Path, dist_static: Path, stack: ExitStack)
         shutil.copytree(proj_static, dist_static, dirs_exist_ok=True)
 
 
+def bundled_example_file(name: str, stack: ExitStack) -> Path | None:
+    """Return a packaged example file, or the copy next to this repo's package."""
+    from importlib.resources import as_file, files
+
+    try:
+        bundled = files("staticvita") / "example" / name
+        if bundled.is_file():
+            return Path(stack.enter_context(as_file(bundled)))
+    except ModuleNotFoundError:
+        pass
+
+    checkout = Path(__file__).resolve().parent.parent / name
+    if checkout.is_file():
+        return checkout
+    return None
+
+
 def _image_ref(value) -> str:
     raw = (value or "").strip() if isinstance(value, str) else ""
     if not raw or raw.startswith(("http://", "https://")):
@@ -116,25 +133,34 @@ def _image_ref(value) -> str:
     return raw
 
 
-def _referenced_image_sources(data: dict, data_path: Path) -> list[tuple[str, str, Path]]:
-    """Resolve profile.avatar against the JSON file's directory."""
+def _referenced_image_sources(
+    data: dict, data_path: Path, stack: ExitStack
+) -> list[tuple[str, str, Path, str]]:
+    """Resolve profile.avatar against the JSON file's directory.
+
+    Returns (container, key, source path, filename published under static/images/).
+    avatar.example.svg with no file beside the JSON uses the packaged portrait.
+    """
     json_dir = data_path.resolve().parent
-    found: list[tuple[str, str, Path]] = []
-    for container, key in (("profile", "avatar"),):
-        obj = data.get(container)
-        if not isinstance(obj, dict):
-            continue
-        raw = _image_ref(obj.get(key))
-        if not raw:
-            continue
-        src = (json_dir / raw).resolve()
-        if not src.is_file():
-            raise FileNotFoundError(f"missing image {raw} (from {data_path})")
-        found.append((container, key, src))
-    return found
+    obj = data.get("profile")
+    if not isinstance(obj, dict):
+        return []
+    raw = _image_ref(obj.get("avatar"))
+    if not raw:
+        return []
+    src = (json_dir / raw).resolve()
+    if src.is_file():
+        return [("profile", "avatar", src, src.name)]
+    if Path(raw).as_posix() == DEFAULT_AVATAR:
+        packaged = bundled_example_file(DEFAULT_AVATAR, stack)
+        if packaged is not None:
+            return [("profile", "avatar", packaged, DEFAULT_AVATAR)]
+    raise FileNotFoundError(f"missing image {raw} (from {data_path})")
 
 
-def _publish_referenced_images(data: dict, sources: list[tuple[str, str, Path]], dist_static: Path) -> None:
+def _publish_referenced_images(
+    data: dict, sources: list[tuple[str, str, Path, str]], dist_static: Path
+) -> None:
     """Copy referenced images to dist/static/images/<filename> and point the JSON fields there.
 
     Theme files stay in dist/static/. User images go in images/ so a path such as
@@ -143,18 +169,18 @@ def _publish_referenced_images(data: dict, sources: list[tuple[str, str, Path]],
     published: dict[Path, str] = {}
     by_name: dict[str, Path] = {}
     images_dir = dist_static / "images"
-    for container, key, src in sources:
+    for container, key, src, filename in sources:
         public = published.get(src)
         if public is None:
-            previous = by_name.get(src.name)
+            previous = by_name.get(filename)
             if previous is not None and previous != src:
                 raise ValueError(
-                    f"two different images are both named {src.name}; rename one of them"
+                    f"two different images are both named {filename}; rename one of them"
                 )
-            by_name[src.name] = src
+            by_name[filename] = src
             images_dir.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, images_dir / src.name)
-            public = f"images/{src.name}"
+            shutil.copy2(src, images_dir / filename)
+            public = f"images/{filename}"
             published[src] = public
         data[container][key] = public
 
@@ -175,10 +201,9 @@ def build_site(
     except json.JSONDecodeError as e:
         raise ValueError(f"invalid JSON in {data_path}: {e}") from e
 
-    image_sources = _referenced_image_sources(data, data_path)
-    out_dir = _prepare_out_dir(project_root, out_dir)
-
     with ExitStack() as stack:
+        image_sources = _referenced_image_sources(data, data_path, stack)
+        out_dir = _prepare_out_dir(project_root, out_dir)
         template_dir = _resolve_template_dir(project_root, stack)
         _publish_referenced_images(data, image_sources, out_dir / "static")
         site = Site.make_site(

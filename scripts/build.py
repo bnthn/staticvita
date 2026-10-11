@@ -6,16 +6,14 @@ import sys
 from pathlib import Path
 
 from staticvita.builder import build_site
-from staticvita.cli import _has_avatar_image, resolve_data_path
+from staticvita.cli import resolve_data_path
 
 
 def _copy_examples_if_missing(root: Path) -> None:
-    """Demo entry point: materialize gitignored working copies from the examples."""
+    """Demo entry point: materialize a gitignored site.json from the example."""
     site = root / "site.json"
     if not site.is_file():
         shutil.copy2(root / "site.example.json", site)
-    if not _has_avatar_image(root):
-        shutil.copy2(root / "avatar.example.svg", root / "avatar.svg")
 
 
 def main() -> None:

@@ -7,87 +7,27 @@ from contextlib import ExitStack
 from pathlib import Path
 
 from staticvita import __version__
-from staticvita.builder import IMAGE_SUFFIXES, build_site
+from staticvita.builder import build_site, bundled_example_file
 
 EXAMPLE_SITE = "site.example.json"
-EXAMPLE_AVATAR = "avatar.example.svg"
 
 
-def _bundled_example_file(name: str, stack: ExitStack) -> Path | None:
-    """Return a real path to a packaged example file, or the source checkout copy."""
-    from importlib.resources import as_file, files
+def ensure_site_json(project: Path) -> bool:
+    """Copy the packaged example to site.json when that file is absent.
 
-    try:
-        bundled = files("staticvita") / "example" / name
-        if bundled.is_file():
-            return Path(stack.enter_context(as_file(bundled)))
-    except ModuleNotFoundError:
-        pass
-
-    checkout = Path(__file__).resolve().parent.parent / name
-    if checkout.is_file():
-        return checkout
-    return None
-
-
-def _has_avatar_image(project: Path) -> bool:
-    names = {f"avatar{suffix}" for suffix in IMAGE_SUFFIXES}
-    for path in project.iterdir():
-        if path.is_file() and path.name.lower() in names:
-            return True
-    return False
-
-
-def ensure_example_files(project: Path) -> list[str]:
-    """Copy starter files into the project root when their real counterparts are missing.
-
-    Writes site.example.json when site.json is absent, and avatar.example.svg
-    when no avatar image is present. Existing files are left in place.
-    Returns the filenames that were created.
+    Does not copy an avatar. Returns True when site.json was created.
     """
     project = project.resolve()
-    needed: list[str] = []
-    if not (project / "site.json").is_file() and not (project / EXAMPLE_SITE).is_file():
-        needed.append(EXAMPLE_SITE)
-    if not _has_avatar_image(project) and not (project / EXAMPLE_AVATAR).is_file():
-        needed.append(EXAMPLE_AVATAR)
-    if not needed:
-        return []
-
-    created: list[str] = []
+    dest = project / "site.json"
+    if dest.is_file():
+        return False
     with ExitStack() as stack:
-        sources: list[tuple[str, Path]] = []
-        for name in needed:
-            src = _bundled_example_file(name, stack)
-            if src is None:
-                raise FileNotFoundError(f"missing example data file: {name}")
-            sources.append((name, src))
-        for name, src in sources:
-            dest = project / name
-            if src.resolve() != dest.resolve():
-                shutil.copy2(src, dest)
-            created.append(name)
-    return created
-
-
-def _print_example_note(project: Path, created: list[str]) -> None:
-    if created:
-        print("wrote " + " and ".join(created))
-    pending: list[str] = []
-    if not (project / "site.json").is_file():
-        pending.append(f"{EXAMPLE_SITE} to site.json")
-    if not _has_avatar_image(project):
-        pending.append(f"{EXAMPLE_AVATAR} to avatar.svg")
-    if not pending:
-        return
-    if len(pending) == 2:
-        action = (
-            f"copy or rename {EXAMPLE_SITE} to site.json and "
-            f"{EXAMPLE_AVATAR} to avatar.svg"
-        )
-    else:
-        action = "copy or rename " + pending[0]
-    print(action + ", then run staticvita again")
+        src = bundled_example_file(EXAMPLE_SITE, stack)
+        if src is None:
+            raise FileNotFoundError(f"missing example data file: {EXAMPLE_SITE}")
+        if src.resolve() != dest.resolve():
+            shutil.copy2(src, dest)
+    return True
 
 
 def resolve_data_path(project: Path, input_arg: str | None) -> Path:
@@ -157,13 +97,11 @@ def _parse(argv: list[str] | None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> None:
     args = _parse(argv)
     project = args.project.resolve()
-    created: list[str] = []
     try:
-        if args.input is None:
-            created = ensure_example_files(project)
-            if not (project / "site.json").is_file():
-                _print_example_note(project, created)
-                return
+        if args.input is None and ensure_site_json(project):
+            print("wrote site.json")
+            print("edit site.json, then run staticvita again")
+            return
         data_path = resolve_data_path(project, args.input)
         out_dir = project / args.out
         build_site(project, data_path, out_dir=out_dir)
@@ -176,8 +114,6 @@ def main(argv: list[str] | None = None) -> None:
     except RuntimeError as e:
         print(f"error: {e}", file=sys.stderr)
         sys.exit(1)
-    if created:
-        print("wrote " + " and ".join(created))
 
 
 if __name__ == "__main__":
