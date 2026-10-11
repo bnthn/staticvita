@@ -9,8 +9,7 @@ from xml.sax.saxutils import escape as xml_escape
 from staticjinja import Site
 
 HTML_PAGES = ("index.html", "cv.html", "imprint.html")
-DEFAULT_AVATAR = "avatar.svg"
-PACKAGED_AVATAR = "avatar.example.svg"
+DEFAULT_AVATAR = "avatar.example.svg"
 
 
 def _normalized_base_url(seo) -> str:
@@ -140,7 +139,7 @@ def _referenced_image_sources(
     """Resolve profile.avatar against the JSON file's directory.
 
     Returns (container, key, source path, filename published under static/images/).
-    avatar.svg with no file beside the JSON uses the packaged portrait.
+    avatar.example.svg with no file beside the JSON uses the packaged portrait.
     """
     json_dir = data_path.resolve().parent
     obj = data.get("profile")
@@ -153,7 +152,7 @@ def _referenced_image_sources(
     if src.is_file():
         return [("profile", "avatar", src, src.name)]
     if Path(raw).as_posix() == DEFAULT_AVATAR:
-        packaged = bundled_example_file(PACKAGED_AVATAR, stack)
+        packaged = bundled_example_file(DEFAULT_AVATAR, stack)
         if packaged is not None:
             return [("profile", "avatar", packaged, DEFAULT_AVATAR)]
     raise FileNotFoundError(f"missing image {raw} (from {data_path})")
