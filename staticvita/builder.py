@@ -9,6 +9,7 @@ from xml.sax.saxutils import escape as xml_escape
 from staticjinja import Site
 
 HTML_PAGES = ("index.html", "cv.html", "imprint.html")
+IMAGE_SUFFIXES = {".svg", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"}
 
 
 def _normalized_base_url(seo) -> str:
@@ -41,7 +42,8 @@ def write_seo_files(data: dict, dist: Path) -> None:
     )
 
 
-def _ensure_out_under_project(project_root: Path, out_dir: Path) -> Path:
+def _prepare_out_dir(project_root: Path, out_dir: Path) -> Path:
+    """Return the output directory, recreated empty, and require it to sit inside the project."""
     out_resolved = out_dir.resolve()
     proj_resolved = project_root.resolve()
     try:
@@ -50,6 +52,11 @@ def _ensure_out_under_project(project_root: Path, out_dir: Path) -> Path:
         raise ValueError(
             f"output directory must be inside project root ({proj_resolved}): {out_resolved}"
         ) from e
+    if out_resolved == proj_resolved:
+        raise ValueError(f"output directory must not be the project root ({proj_resolved})")
+    if out_resolved.exists():
+        shutil.rmtree(out_resolved)
+    out_resolved.mkdir(parents=True)
     return out_resolved
 
 
@@ -102,22 +109,54 @@ def _copy_static_assets(project_root: Path, dist_static: Path, stack: ExitStack)
         shutil.copytree(proj_static, dist_static, dirs_exist_ok=True)
 
 
-def _copy_data_assets(project_root: Path, dist_static: Path) -> None:
-    """Copy user assets (e.g. images) from data/ into dist/static/.
+def _image_ref(value) -> str:
+    raw = (value or "").strip() if isinstance(value, str) else ""
+    if not raw or raw.startswith(("http://", "https://")):
+        return ""
+    return raw
 
-    JSON site data and Markdown documentation in data/ are not site assets and
-    are skipped.
-    """
-    data_dir = project_root / "data"
-    if not data_dir.is_dir():
-        return
-    for src in data_dir.rglob("*"):
-        if not src.is_file() or src.suffix.lower() in {".json", ".md"}:
+
+def _referenced_image_sources(data: dict, data_path: Path) -> list[tuple[str, str, Path]]:
+    """Resolve profile.avatar against the JSON file's directory."""
+    json_dir = data_path.resolve().parent
+    found: list[tuple[str, str, Path]] = []
+    for container, key in (("profile", "avatar"),):
+        obj = data.get(container)
+        if not isinstance(obj, dict):
             continue
-        rel = src.relative_to(data_dir)
-        dest = dist_static / rel
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src, dest)
+        raw = _image_ref(obj.get(key))
+        if not raw:
+            continue
+        src = (json_dir / raw).resolve()
+        if not src.is_file():
+            raise FileNotFoundError(f"missing image {raw} (from {data_path})")
+        found.append((container, key, src))
+    return found
+
+
+def _publish_referenced_images(data: dict, sources: list[tuple[str, str, Path]], dist_static: Path) -> None:
+    """Copy referenced images to dist/static/images/<filename> and point the JSON fields there.
+
+    Theme files stay in dist/static/. User images go in images/ so a path such as
+    screenshots/portrait.png is served as static/images/portrait.png.
+    """
+    published: dict[Path, str] = {}
+    by_name: dict[str, Path] = {}
+    images_dir = dist_static / "images"
+    for container, key, src in sources:
+        public = published.get(src)
+        if public is None:
+            previous = by_name.get(src.name)
+            if previous is not None and previous != src:
+                raise ValueError(
+                    f"two different images are both named {src.name}; rename one of them"
+                )
+            by_name[src.name] = src
+            images_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, images_dir / src.name)
+            public = f"images/{src.name}"
+            published[src] = public
+        data[container][key] = public
 
 
 def build_site(
@@ -128,7 +167,6 @@ def build_site(
     """Load JSON from data_path, render templates into out_dir, copy static, write SEO files."""
     project_root = project_root.resolve()
     out_dir = (project_root / "dist") if out_dir is None else Path(out_dir)
-    out_dir = _ensure_out_under_project(project_root, out_dir)
 
     if not data_path.is_file():
         raise FileNotFoundError(f"missing data file: {data_path}")
@@ -137,10 +175,12 @@ def build_site(
     except json.JSONDecodeError as e:
         raise ValueError(f"invalid JSON in {data_path}: {e}") from e
 
-    out_dir.mkdir(parents=True, exist_ok=True)
+    image_sources = _referenced_image_sources(data, data_path)
+    out_dir = _prepare_out_dir(project_root, out_dir)
 
     with ExitStack() as stack:
         template_dir = _resolve_template_dir(project_root, stack)
+        _publish_referenced_images(data, image_sources, out_dir / "static")
         site = Site.make_site(
             searchpath=str(template_dir),
             outpath=str(out_dir),
@@ -148,6 +188,5 @@ def build_site(
         )
         site.render()
         _copy_static_assets(project_root, out_dir / "static", stack)
-        _copy_data_assets(project_root, out_dir / "static")
 
     write_seo_files(data, out_dir)

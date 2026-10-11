@@ -1,6 +1,6 @@
 # staticvita 🪪
 
-A small static site generator to create a link tree and CV from JSON. It aims for a minimal footprint and for output that reads well to machines (search engines, CV parsers) and to assistive technologies such as screen readers.
+A lightweight yet customizable static site generator built on [staticjinja](https://github.com/staticjinja/staticjinja), designed to generate a link tree and CV from JSON data. The focus is on a minimal footprint and producing output that is accessible to both machines (such as search engines and CV parsers) and assistive technologies like screen readers.
 
 **Demo:** [bnthn.github.io/staticvita](https://bnthn.github.io/staticvita)
 
@@ -18,17 +18,16 @@ pip install staticvita
 
 ## Build a site
 
-Run `staticvita` in a project directory. By default it reads `data/site.json` and writes the site to `dist/`.
+Run `staticvita` in a project directory. If `site.json` is missing, the command writes [site.example.json](site.example.json) and [avatar.example.svg](avatar.example.svg) when those are not already there, then stops. Copy or rename them to `site.json` and `avatar.svg`, then run `staticvita` again. That reads `site.json` and writes the site to `dist/`.
+
+Field reference: [SITE.md](SITE.md).
 
 Stock templates and base styles ship in the package. A `templates/` directory in the project replaces them. A project `static/` directory is merged on top of the packaged assets.
 
 ```bash
-staticvita
-staticvita -i site.ben.json    # tries ./site.ben.json then data/site.ben.json
-staticvita -i data/site.ben.json
-staticvita -C /path/to/project -i data/site.json
-staticvita -h
-staticvita --version
+staticvita                      # site.json → dist/
+staticvita -i site.json         # ./site.json, else data/site.json
+staticvita -C /path/to/project  # build that directory
 ```
 
 Open `dist/index.html` in a browser, or serve the `dist/` directory with any static file server.
@@ -41,17 +40,8 @@ From a clone, at the repository root:
 ./build.sh
 ```
 
-That creates a local virtual environment at `venv/` if needed, installs the package, and runs `staticvita` on this repo’s `data/site.json`.
+That creates a local virtual environment at `venv/` if needed, installs the package, copies `site.example.json` to `site.json` when that file is missing, copies `avatar.example.svg` to `avatar.svg` when no avatar image is present, and runs `staticvita`.
 
-## What to edit
+## Contributing
 
-| What to change | Where |
-|----------------|--------|
-| Copy, profile, links, experience, education, etc. | [data/site.json](data/site.json) |
-| Profile picture / user images | `data/` (e.g. `data/images/avatar.svg`; copied into `dist/static/`) |
-| Page structure and markup | [templates/](templates/) |
-| Styles, scripts | [static/](static/) |
-
-`data/site.json` supplies profile, links, and CV sections to every template. Other non-JSON files in `data/` are copied into `dist/static/`. `dist/` is generated on each build.
-
-Contributor notes, including how the package is built and published, are in [CONTRIBUTING.md](CONTRIBUTING.md).
+Development notes are in [CONTRIBUTING.md](CONTRIBUTING.md).

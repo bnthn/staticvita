@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "staticvita"
-version = "0.1"
+version = "0.2"
 description = "Static CV/site generator using Jinja2 and JSON site data"
 readme = "README.md"
 license = "MIT"
@@ -48,3 +48,5 @@ packages = ["staticvita"]
 [tool.hatch.build.targets.wheel.force-include]
 "templates" = "staticvita/templates"
 "static" = "staticvita/static"
+"site.example.json" = "staticvita/example/site.example.json"
+"avatar.example.svg" = "staticvita/example/avatar.example.svg"

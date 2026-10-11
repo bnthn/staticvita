@@ -1,16 +1,27 @@
 #!/usr/bin/env python3
 """Build using the repository root as project root (independent of current working directory)."""
 
+import shutil
 import sys
 from pathlib import Path
 
 from staticvita.builder import build_site
-from staticvita.cli import resolve_data_path
+from staticvita.cli import _has_avatar_image, resolve_data_path
+
+
+def _copy_examples_if_missing(root: Path) -> None:
+    """Demo entry point: materialize gitignored working copies from the examples."""
+    site = root / "site.json"
+    if not site.is_file():
+        shutil.copy2(root / "site.example.json", site)
+    if not _has_avatar_image(root):
+        shutil.copy2(root / "avatar.example.svg", root / "avatar.svg")
 
 
 def main() -> None:
     # scripts/ -> repo root
     root = Path(__file__).resolve().parent.parent
+    _copy_examples_if_missing(root)
     try:
         data_path = resolve_data_path(root, None)
         build_site(root, data_path, out_dir=root / "dist")

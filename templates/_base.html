@@ -13,10 +13,11 @@
 {%- block meta_description %}{% if profile.summary %}{{ profile.summary }}{% endif %}{% endblock %}
 {%- endset %}
 {%- set meta_desc = meta_desc_raw | trim %}
-{%- set og_img_raw = s.og_image | default('', true) | trim %}
+{%- set og_img_raw = profile.avatar | default('', true) | trim %}
 {%- set header_display = profile.header_title | default(profile.given_name ~ ' ' ~ profile.family_name, true) | trim %}
+{%- set accent_name = p.accent | default('', true) | trim %}
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark"{% if accent_name in ['green', 'red', 'yellow', 'orange', 'purple', 'mint', 'brown'] %} class="accent-{{ accent_name }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,12 +35,7 @@
   <meta property="og:url" content="{{ base_url }}/{{ page_path | e }}">
   <meta property="og:locale" content="en_US">
   {%- if og_img_raw %}
-    {%- if og_img_raw.startswith('http://') or og_img_raw.startswith('https://') %}
-      {%- set og_image_abs = og_img_raw %}
-    {%- else %}
-      {%- set og_image_abs = base_url ~ '/static/' ~ og_img_raw.lstrip('/') %}
-    {%- endif %}
-  <meta property="og:image" content="{{ og_image_abs | e }}">
+  <meta property="og:image" content="{{ (base_url ~ '/static/' ~ og_img_raw.lstrip('/')) | e }}">
   {%- endif %}
   {% endif %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">

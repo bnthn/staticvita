@@ -1,12 +1,14 @@
 # Site data (`site.json`)
 
-The build reads your chosen JSON (default **`data/site.json`**) and passes the whole object into the Jinja environment (`staticvita` / `staticvita.builder`). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `seo`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
+The build reads your chosen JSON (default **`site.json`** in the project directory) and passes the whole object into the Jinja environment (`staticvita` / `staticvita.builder`). Top-level keys become template variables: `profile`, `links`, `cv`, optionally `seo`, optionally `imprint`, and optionally `plugins` (conventionally list `plugins` last in the file).
 
-Use valid JSON (double quotes, no trailing commas). After editing, run `./build.sh` from the repository root.
+Use valid JSON (double quotes, no trailing commas). After editing, run `staticvita` again (or `./build.sh` from this repository).
 
-## Assets in `data/`
+## Images
 
-Files in `data/` that are not JSON (site data) or Markdown (docs) are treated as site assets: they are copied into `static/` in the build output and served under `/static/…`. This is where profile pictures and other user images belong (e.g. `data/images/avatar.jpg` referenced as `images/avatar.jpg`). The default placeholder graphic ships as **`data/images/avatar.svg`**. `data/` holds your personal content, so everything except the shipped template files (`README.md`, `site.json`, `images/avatar.svg`) is gitignored.
+`profile.avatar` is a path relative to the directory that contains the JSON file (`avatar.svg`, or `screenshots/portrait.png`). The file is copied into `dist/static/images/` under its filename and served as `/static/images/…`. When `seo.base_url` is set, that same picture is the Open Graph image. Theme files stay beside that folder in `dist/static/`. `dist/` is deleted and written again on every build.
+
+The profile picture is often `avatar.svg` or `avatar.png` next to the JSON file. Starter copies ship as **`site.example.json`** and **`avatar.example.svg`**. Copy or rename them to drop the `.example` suffix.
 
 ## `profile` (object)
 
@@ -17,7 +19,7 @@ Used on the links page (`index.html`) and the CV page (`cv.html`).
 | `given_name` | string | Shown in titles and headings. |
 | `family_name` | string | Shown in titles and headings. |
 | `header_title` | string or omit | If set to a non-empty string, used for the site header `<h1>` link on all pages instead of `given_name` + `family_name`. Omit or leave empty to use the name. |
-| `avatar` | string or omit | Path **relative to `data/`** (e.g. `images/avatar.svg`); files in `data/` (or `static/`) are served under `static/…`. If omitted or empty, initials are shown from the name. |
+| `avatar` | string or omit | Path **relative to the directory that contains the JSON file** (e.g. `avatar.svg` or `photos/portrait.png`). Copied to `static/images/<filename>`. If omitted or empty, initials are shown from the name. |
 | `avatar_alt` | string or omit | `alt` text for the profile `<img>`. If omitted, defaults to `Portrait of {given_name} {family_name}` or `Profile picture` if both names are empty. |
 | `subtitle` | string or omit | Tagline under the name. |
 | `email` | string or omit | Rendered as a `mailto:` link on the CV. |
@@ -32,8 +34,7 @@ Used on the links page. Each item is an object:
 |--------|------|--------|
 | `label` | string | Accessible name / `aria-label` for the icon link. |
 | `url` | string | Full URL. |
-| `icon` | string or omit | Short name mapped to Font Awesome in `_icons.html`: `linkedin`, `github`, `gitlab`, `codeberg`. Anything else falls back to a generic link icon. |
-| `fa_class` | string or omit | If set, used **instead of** `icon` for the `<i>` classes (Font Awesome 7), e.g. `fa-solid fa-code-branch`. |
+| `fa_class` | string or omit | Font Awesome classes for the `<i>` (Font Awesome 7), e.g. `fa-brands fa-github`. Icon names are listed at [fontawesome.com/icons](https://fontawesome.com/icons). If omitted, a generic link icon is used. |
 
 Use an empty array `[]` if you have no social links.
 
@@ -93,8 +94,7 @@ Controls canonical URLs, Open Graph meta tags, optional **Person** JSON-LD on th
 
 | Field | Type | Notes |
 |--------|------|--------|
-| `base_url` | string or omit | Public site origin **without** a trailing slash (e.g. `https://yoursite.example`). Used for `link rel="canonical"`, `og:url`, JSON-LD `url`, and sitemap `loc` values. |
-| `og_image` | string or omit | Open Graph image for link previews: either a full `https://…` (or `http://…`) URL, or a path **relative to `data/`** (e.g. `images/avatar.svg`), resolved against `base_url` as `/static/…`. |
+| `base_url` | string or omit | Public site origin **without** a trailing slash (e.g. `https://yoursite.example`). Used for `link rel="canonical"`, `og:url`, JSON-LD `url`, and sitemap `loc` values. When `profile.avatar` is set, `og:image` uses that picture. |
 
 Optional overrides for `meta name="description"`:
 
@@ -125,7 +125,8 @@ Effect values use **kebab-case** (e.g. `contract-vowels`). Unknown values are ig
 | Field | Type | Allowed values | Notes |
 |--------|------|----------------|--------|
 | `headertitle` | string or omit | `contract-vowels` | Site header `<h1>` link on all pages: vowels stay visually collapsed until the header bar is hovered; the link’s `aria-label` matches the same string shown in the header (see `profile.header_title`). |
-| `avatar` | string or omit | `float-on-hover` | Home page (`index.html`) only: idle looks like the default avatar; on hover the disc scales slightly, tilts in 3D, gains layered shadow (light theme) or a soft white/blue glow (dark theme), plus a gloss overlay that rotates slightly with the pop. Pointer-based parallax is not available in pure CSS (would need a small script). |
+| `avatar` | string or omit | `float-on-hover` | Home page (`index.html`) only: idle looks like the default avatar; on hover the disc scales slightly, tilts in 3D, gains layered shadow (light theme) or a soft glow in the accent hue (dark theme), plus a gloss overlay that rotates slightly with the pop. Pointer-based parallax is not available in pure CSS (would need a small script). |
+| `accent` | string or omit | `blue`, `green`, `red`, `yellow`, `orange`, `purple`, `mint`, `brown` | Link color, and the faint hue in the background, text, borders, and social buttons. `blue`, an omitted key, or an unknown value keeps the default palette in `style.css`. Other values keep that palette’s lightness and shift its hue. |
 
 ## Minimal skeleton
 
@@ -154,4 +155,4 @@ Effect values use **kebab-case** (e.g. `contract-vowels`). Unknown values are ig
 }
 ```
 
-See the checked-in **`site.json`** in this folder for a full example (including optional `plugins` at the end).
+See **`site.example.json`** at the repository root for a full example (including optional `plugins` at the end).

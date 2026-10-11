@@ -10,10 +10,14 @@ python-dist/
 *.egg-info/
 .eggs/
 __pycache__/
-# data/ holds user content; only the shipped template files below are tracked.
+# data/ holds optional personal content and is not part of the starter kit.
 data/*
-!data/README.md
-!data/site.json
-!data/images/
-data/images/*
-!data/images/avatar.svg
+# Working copies of the starter files. Copy or rename the .example files, then edit these.
+/site.json
+/avatar.svg
+/avatar.png
+/avatar.jpg
+/avatar.jpeg
+/avatar.webp
+/avatar.gif
+/avatar.avif

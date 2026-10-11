@@ -6,15 +6,15 @@ This repository is a **static CV site**: Jinja2 templates plus JSON data plus st
 
 | Purpose | Path |
 |---------|------|
-| Structured content (profile, CV sections, links) | `data/site.json` |
-| Schema / field docs for `site.json` (keep in sync with templates) | `data/README.md` |
+| Structured content (profile, CV sections, links) | `site.json` (start from `site.example.json`) |
+| Schema / field docs for `site.json` (keep in sync with templates) | `SITE.md` |
 | HTML / layout | `templates/` |
 | CSS, JS | `static/` (base styles `static/style.css`; optional `site.json` plugin styles `static/plugin.css`, linked from `_base.html`) |
-| User images (e.g. profile picture) | `data/` — non-JSON/non-Markdown files are copied into `dist/static/` at build time; the default avatar ships at `data/images/avatar.svg`. Only the shipped `data/` files are tracked; user content in `data/` is gitignored. |
+| User images (e.g. profile picture) | Paths in `site.json`, relative to that file. Copied into `dist/static/images/` at build time. The starter avatar is `avatar.example.svg`. Working copies (`site.json`, `avatar.svg`, and other `avatar` image names) are gitignored. |
 | Generator (builder and CLI) | `staticvita/` |
 | Package metadata | `pyproject.toml` |
 
-When you change **`templates/`** in ways that affect which JSON fields exist, how they are used, or optional vs required behavior, or when you change the **`data/site.json`** shape or conventions, update **`data/README.md`** so it stays accurate.
+When you change **`templates/`** in ways that affect which JSON fields exist, how they are used, or optional vs required behavior, or when you change the **`site.json`** shape or conventions, update **`SITE.md`** so it stays accurate.
 
 To change how the site is built, edit [`staticvita/`](staticvita/) (builder and CLI), [`pyproject.toml`](pyproject.toml), [`build.sh`](build.sh), or [`requirements.txt`](requirements.txt) deliberately. The `venv/` directory is local and is not part of the project’s source layout.
 
@@ -56,7 +56,7 @@ Document other notable tradeoffs in PRs or here.
 
 Many applications are filtered by **ATS (Applicant Tracking System)** parsers, **resume–job match tools** (e.g. Jobscan), or **AI assistants** that extract plain text from a CV. This site’s CV is the built **`cv.html`** page and its **`site.json`** source—not a separate PDF upload—so keep that output **machine-readable** as well as human-readable.
 
-- **Content:** Roles, skills, summaries, and bullets in `data/site.json` are what parsers see; use **plain text** for facts and keywords you want matched. Do not rely on images, icons, or hidden text for critical terms (the profile avatar is decorative; body copy matters).
+- **Content:** Roles, skills, summaries, and bullets in `site.json` are what parsers see; use **plain text** for facts and keywords you want matched. Do not rely on images, icons, or hidden text for critical terms (the profile avatar is decorative; body copy matters).
 - **Markup:** In `templates/cv.html`, favor **semantic, stable structure** (sections, headings, lists, normal links) so extraction order stays predictable. Changes here should not regress Lynx or screen-reader usability when avoidable—overlap with accessibility is usually high.
 
 ## Accessibility and progressive enhancement
@@ -64,7 +64,7 @@ Many applications are filtered by **ATS (Applicant Tracking System)** parsers, *
 - **No-JS baseline:** All meaningful content and navigation must work with JavaScript disabled. JS is only for theme preference (`static/theme.js`).
 - **Theme control:** The theme toggle is **hidden by default** in CSS and only shown when `theme.js` runs and adds the class `js` on `<html>`, so users do not see a non-functional control without JS.
 - **Tradeoffs:** If design, SEO, CV parsing, and accessibility cannot all be fully satisfied, follow the **Priorities** order above. Example of balancing an icon-only visual with text-browser usability: use `aria-label` plus a `.visually-hidden` text label where needed (header nav, profile social links) so screen readers and Lynx get real link text—`aria-label` alone is often ignored in line-mode browsers.
-- **Images and icons:** Use non-empty, appropriate `alt` on `<img>` (see `profile.avatar_alt` in `data/README.md` for the profile image). Decorative Font Awesome icons use `aria-hidden="true"`; put the accessible name on the parent control (`aria-label` on `<a>` / the theme button).
+- **Images and icons:** Use non-empty, appropriate `alt` on `<img>` (see `profile.avatar_alt` in `SITE.md` for the profile image). Decorative Font Awesome icons use `aria-hidden="true"`; put the accessible name on the parent control (`aria-label` on `<a>` / the theme button).
 - **HTML quality:** Keep templates producing **valid, semantic HTML** (landmarks, headings, `lang`). After template changes, run `./build.sh` and fix issues.
 
 ## Text browsers (e.g. Lynx)
